@@ -122,8 +122,9 @@ statement instead the previous block.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.71.2, < 2.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.76.0, < 2.0.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
 
 ### Modules
 
@@ -133,25 +134,35 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [ibm_resource_instance.cos_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
+| [ibm_atracker_route.atracker_routes](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_route) | resource |
+| [ibm_atracker_settings.atracker_settings](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_settings) | resource |
+| [ibm_atracker_target.atracker_cloud_logs_targets](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_target) | resource |
+| [ibm_atracker_target.atracker_cos_targets](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_target) | resource |
+| [ibm_atracker_target.atracker_eventstreams_targets](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_target) | resource |
+| [ibm_iam_authorization_policy.atracker_cloud_logs](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.atracker_cos](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.atracker_es](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [time_sleep.wait_for_cloud_logs_auth_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [time_sleep.wait_for_event_stream_auth_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | A descriptive name used to identify the resource instance. | `string` | n/a | yes |
-| <a name="input_plan"></a> [plan](#input\_plan) | The name of the plan type supported by service. | `string` | `"standard"` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The ID of the resource group where you want to create the service. | `string` | n/a | yes |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | List of resource tag to associate with the instance. | `list(string)` | `[]` | no |
+| <a name="input_activity_tracker_routes"></a> [activity\_tracker\_routes](#input\_activity\_tracker\_routes) | List of routes to be created, maximum four routes are allowed | <pre>list(object({<br>    locations  = list(string)<br>    target_ids = list(string)<br>    route_name = string<br>  }))</pre> | `[]` | no |
+| <a name="input_cloud_logs_targets"></a> [cloud\_logs\_targets](#input\_cloud\_logs\_targets) | List of Cloud Logs targets to be created | <pre>list(object({<br>    instance_id                              = string<br>    target_region                            = optional(string)<br>    target_name                              = string<br>    skip_atracker_cloud_logs_iam_auth_policy = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_cos_targets"></a> [cos\_targets](#input\_cos\_targets) | List of cos target to be created | <pre>list(object({<br>    endpoint                          = string<br>    bucket_name                       = string<br>    instance_id                       = string<br>    api_key                           = optional(string)<br>    service_to_service_enabled        = optional(bool, true)<br>    target_region                     = optional(string)<br>    target_name                       = string<br>    skip_atracker_cos_iam_auth_policy = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_eventstreams_targets"></a> [eventstreams\_targets](#input\_eventstreams\_targets) | List of event streams target to be created | <pre>list(object({<br>    instance_id                      = string<br>    brokers                          = list(string)<br>    topic                            = string<br>    api_key                          = optional(string)<br>    service_to_service_enabled       = optional(bool, true)<br>    target_region                    = optional(string)<br>    target_name                      = string<br>    skip_atracker_es_iam_auth_policy = optional(bool, false)<br>  }))</pre> | `[]` | no |
+| <a name="input_global_event_routing_settings"></a> [global\_event\_routing\_settings](#input\_global\_event\_routing\_settings) | Global settings for event routing | <pre>object({<br>    default_targets           = optional(list(string), [])<br>    metadata_region_primary   = string<br>    metadata_region_backup    = optional(string)<br>    permitted_target_regions  = list(string)<br>    private_api_endpoint_only = optional(bool, false)<br>  })</pre> | `null` | no |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_account_id"></a> [account\_id](#output\_account\_id) | An alpha-numeric value identifying the account ID. |
-| <a name="output_crn"></a> [crn](#output\_crn) | The CRN of the resource instance. |
-| <a name="output_guid"></a> [guid](#output\_guid) | The GUID of the resource instance. |
-| <a name="output_id"></a> [id](#output\_id) | The unique identifier of the resource instance. |
+| <a name="output_activity_tracker_routes"></a> [activity\_tracker\_routes](#output\_activity\_tracker\_routes) | The map of created routes |
+| <a name="output_activity_tracker_settings"></a> [activity\_tracker\_settings](#output\_activity\_tracker\_settings) | AT event routing account global settings. |
+| <a name="output_activity_tracker_targets"></a> [activity\_tracker\_targets](#output\_activity\_tracker\_targets) | The map of created targets |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->
