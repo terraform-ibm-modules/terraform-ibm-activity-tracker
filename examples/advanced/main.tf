@@ -113,13 +113,13 @@ module "buckets" {
       resource_instance_id          = module.cos.cos_instance_id
       kms_guid                      = module.key_protect.kms_guid
       kms_key_crn                   = module.key_protect.keys["${local.key_ring_name}.${local.key_name}"].crn
-      skip_iam_authorization_policy = true # Auth policy created in first bucket
+      skip_iam_authorization_policy = false # Auth policy created in first bucket
     }
   ]
 }
 
 ##############################################################################
-# - Activity Tracker Event Routingconfig:
+# - Activity Tracker Event Routing config:
 #   - COS AT target
 #   - Cloud Logs AT target
 #   - Event Streams AT target

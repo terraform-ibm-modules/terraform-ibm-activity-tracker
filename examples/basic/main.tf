@@ -39,7 +39,7 @@ module "event_streams" {
 }
 
 ##############################################################################
-# - Activity Tracker Event Routingconfig:
+# - Activity Tracker Event Routing config:
 #   - Event Streams AT target
 #   - AT route event stream target
 ##############################################################################
