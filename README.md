@@ -1,38 +1,22 @@
-<!-- Update this title with a descriptive name. Use sentence case. -->
-# Terraform modules template project
+# IBM Cloud Activity Tracker
 
-<!--
-Update status and "latest release" badges:
-  1. For the status options, see https://terraform-ibm-modules.github.io/documentation/#/badge-status
-  2. Update the "latest release" badge to point to the correct module's repo. Replace "terraform-ibm-module-template" in two places.
--->
-[![Incubating (Not yet consumable)](https://img.shields.io/badge/status-Incubating%20(Not%20yet%20consumable)-red)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
-[![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-activity-tracker?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases/latest)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+[![Graduated (Supported)](https://img.shields.io/badge/Status-Graduated%20(Supported)-brightgreen)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-activity-tracker?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases/latest)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
-<!--
-Add a description of modules in this repo.
-Expand on the repo short description in the .github/settings.yml file.
+This module supports configuring an IBM Cloud Activity Tracker event routing target, routes and settings.
 
-For information, see "Module names and descriptions" at
-https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
--->
-
-TODO: Replace this with a description of the modules in this repo.
-
-
-<!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
+
 * [terraform-ibm-activity-tracker](#terraform-ibm-activity-tracker)
 * [Examples](./examples)
-    * [Advanced example](./examples/advanced)
-    * [Basic example](./examples/basic)
+  * [Advanced example](./examples/advanced)
+  * [Basic example](./examples/basic)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
-
 
 <!--
 If this repo contains any reference architectures, uncomment the heading below and link to them.
@@ -42,18 +26,10 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 -->
 <!-- ## Reference architectures -->
 
-
 <!-- Replace this heading with the name of the root level module (the repo name) -->
 ## terraform-ibm-activity-tracker
 
 ### Usage
-
-<!--
-Add an example of the use of the module in the following code block.
-
-Use real values instead of "var.<var_name>" or other placeholder values
-unless real values don't help users know what to change.
--->
 
 ```hcl
 terraform {
@@ -68,6 +44,11 @@ terraform {
 
 locals {
     region = "us-south"
+    target_ids = [
+    module.activity_tracker.activity_tracker_targets["icl-target"].id,
+    module.activity_tracker.activity_tracker_targets["cos-target"].id,
+    module.activity_tracker.activity_tracker_targets["es-target"].id
+  ]
 }
 
 provider "ibm" {
@@ -75,12 +56,53 @@ provider "ibm" {
   region           = local.region
 }
 
-module "module_template" {
-  source            = "terraform-ibm-modules/<replace>/ibm"
+module "activity_tracker" {
+  source            = "terraform-ibm-modules/activity-tracker/ibm"
   version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  region            = local.region
-  name              = "instance-name"
-  resource_group_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the actual ID of resource group to use
+
+  # Cloud Logs target
+  cloud_logs_targets = [
+    {
+      instance_id   = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      target_region = local.region
+      target_name   = "icl-target"
+    }
+  ]
+
+  # COS target
+  cos_targets = [
+    {
+      bucket_name                       = "cos-bucket"
+      endpoint                          = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      instance_id                       = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      target_region                     = local.region
+      target_name                       = "cos-target"
+      skip_atracker_cos_iam_auth_policy = false
+      service_to_service_enabled        = true
+    }
+  ]
+
+  # Event Stream target
+  eventstreams_targets = [
+    {
+      instance_id                      = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      brokers                          = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      topic                            = "es-topic"
+      target_region                    = local.region
+      target_name                      = "es-target"
+      service_to_service_enabled       = true
+      skip_atracker_es_iam_auth_policy = false
+    }
+  ]
+
+  # AT Event routing route
+  activity_tracker_routes = [
+    {
+      locations  = ["*", "global"]
+      target_ids = local.target_ids
+      route_name = "at-route"
+    }
+  ]
 }
 ```
 
@@ -114,7 +136,6 @@ statement instead the previous block.
 -->
 
 <!-- No permissions are needed to run this module.-->
-
 
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
