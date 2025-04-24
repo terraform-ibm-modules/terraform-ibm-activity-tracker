@@ -110,7 +110,7 @@ resource "ibm_atracker_route" "atracker_routes" {
 #########################################################################
 
 resource "ibm_atracker_settings" "atracker_settings" {
-  count                     = length(var.global_event_routing_settings == null ? [] : [1])
+  count                     = var.global_event_routing_settings == null ? 0 : 1
   default_targets           = var.global_event_routing_settings.default_targets
   metadata_region_primary   = var.global_event_routing_settings.metadata_region_primary
   metadata_region_backup    = var.global_event_routing_settings.metadata_region_backup
