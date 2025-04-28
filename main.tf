@@ -2,6 +2,9 @@
 # Activity Tracker Event Routing
 #########################################################################
 
+data "ibm_iam_account_settings" "iam_account_settings" {
+}
+
 resource "time_sleep" "wait_for_authorization_policy" {
   depends_on      = [ibm_iam_authorization_policy.atracker_cos]
   create_duration = "30s"
@@ -9,12 +12,44 @@ resource "time_sleep" "wait_for_authorization_policy" {
 
 # atracker to COS s2s auth policy
 resource "ibm_iam_authorization_policy" "atracker_cos" {
-  for_each                    = nonsensitive({ for target in var.cos_targets : target.target_name => target if target.service_to_service_enabled && !target.skip_atracker_cos_iam_auth_policy })
-  source_service_name         = "atracker"
-  target_service_name         = "cloud-object-storage"
-  target_resource_instance_id = regex(".*:(.*)::", each.value.instance_id)[0]
-  roles                       = ["Object Writer"]
-  description                 = "Permit AT service Object Writer access to COS instance ${each.value.instance_id}"
+  for_each            = nonsensitive({ for target in var.cos_targets : target.target_name => target if target.service_to_service_enabled && !target.skip_atracker_cos_iam_auth_policy })
+  source_service_name = "atracker"
+  roles               = ["Object Writer"]
+  description         = "Permit AT service Object Writer access to COS instance ${each.value.instance_id}"
+
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+
+  resource_attributes {
+    name     = "serviceName"
+    operator = "stringEquals"
+    value    = "cloud-object-storage"
+  }
+
+  resource_attributes {
+    name     = "serviceInstance"
+    operator = "stringEquals"
+    value    = split(":", each.value.instance_id)[7]
+  }
+
+  resource_attributes {
+    name     = "resourceType"
+    operator = "stringEquals"
+    value    = "bucket"
+  }
+
+  resource_attributes {
+    name     = "resource"
+    operator = "stringEquals"
+    value    = each.value.bucket_name
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "time_sleep" "wait_for_cloud_logs_auth_policy" {
