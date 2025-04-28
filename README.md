@@ -1,29 +1,13 @@
-<!-- Update this title with a descriptive name. Use sentence case. -->
-# Terraform modules template project
+# IBM Cloud Activity Tracker Event Routing
 
-<!--
-Update status and "latest release" badges:
-  1. For the status options, see https://terraform-ibm-modules.github.io/documentation/#/badge-status
-  2. Update the "latest release" badge to point to the correct module's repo. Replace "terraform-ibm-module-template" in two places.
--->
-[![Incubating (Not yet consumable)](https://img.shields.io/badge/status-Incubating%20(Not%20yet%20consumable)-red)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
-[![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-activity-tracker?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases/latest)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+[![Graduated (Supported)](https://img.shields.io/badge/Status-Graduated%20(Supported)-brightgreen)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-activity-tracker?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases/latest)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
-<!--
-Add a description of modules in this repo.
-Expand on the repo short description in the .github/settings.yml file.
+This module supports configuring an IBM Cloud Activity Tracker event routing target, routes and settings.
 
-For information, see "Module names and descriptions" at
-https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
--->
-
-TODO: Replace this with a description of the modules in this repo.
-
-
-<!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
 * [terraform-ibm-activity-tracker](#terraform-ibm-activity-tracker)
@@ -33,7 +17,6 @@ TODO: Replace this with a description of the modules in this repo.
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
-
 <!--
 If this repo contains any reference architectures, uncomment the heading below and link to them.
 (Usually in the `/reference-architectures` directory.)
@@ -42,18 +25,10 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 -->
 <!-- ## Reference architectures -->
 
-
 <!-- Replace this heading with the name of the root level module (the repo name) -->
 ## terraform-ibm-activity-tracker
 
 ### Usage
-
-<!--
-Add an example of the use of the module in the following code block.
-
-Use real values instead of "var.<var_name>" or other placeholder values
-unless real values don't help users know what to change.
--->
 
 ```hcl
 terraform {
@@ -68,6 +43,11 @@ terraform {
 
 locals {
     region = "us-south"
+    target_ids = [
+    module.activity_tracker.activity_tracker_targets["icl-target"].id,
+    module.activity_tracker.activity_tracker_targets["cos-target"].id,
+    module.activity_tracker.activity_tracker_targets["es-target"].id
+  ]
 }
 
 provider "ibm" {
@@ -75,12 +55,53 @@ provider "ibm" {
   region           = local.region
 }
 
-module "module_template" {
-  source            = "terraform-ibm-modules/<replace>/ibm"
+module "activity_tracker" {
+  source            = "terraform-ibm-modules/activity-tracker/ibm"
   version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  region            = local.region
-  name              = "instance-name"
-  resource_group_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the actual ID of resource group to use
+
+  # Cloud Logs target
+  cloud_logs_targets = [
+    {
+      instance_id   = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      target_region = local.region
+      target_name   = "icl-target"
+    }
+  ]
+
+  # COS target
+  cos_targets = [
+    {
+      bucket_name                       = "cos-bucket"
+      endpoint                          = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      instance_id                       = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      target_region                     = local.region
+      target_name                       = "cos-target"
+      skip_atracker_cos_iam_auth_policy = false
+      service_to_service_enabled        = true
+    }
+  ]
+
+  # Event Stream target
+  eventstreams_targets = [
+    {
+      instance_id                      = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      brokers                          = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      topic                            = "es-topic"
+      target_region                    = local.region
+      target_name                      = "es-target"
+      service_to_service_enabled       = true
+      skip_atracker_es_iam_auth_policy = false
+    }
+  ]
+
+  # AT Event routing route
+  activity_tracker_routes = [
+    {
+      locations  = ["*", "global"]
+      target_ids = local.target_ids
+      route_name = "at-route"
+    }
+  ]
 }
 ```
 
@@ -115,7 +136,6 @@ statement instead the previous block.
 
 <!-- No permissions are needed to run this module.-->
 
-
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
@@ -123,7 +143,8 @@ statement instead the previous block.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.71.2, < 2.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.76.0, < 2.0.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
 
 ### Modules
 
@@ -133,25 +154,36 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [ibm_resource_instance.cos_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
+| [ibm_atracker_route.atracker_routes](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_route) | resource |
+| [ibm_atracker_settings.atracker_settings](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_settings) | resource |
+| [ibm_atracker_target.atracker_cloud_logs_targets](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_target) | resource |
+| [ibm_atracker_target.atracker_cos_targets](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_target) | resource |
+| [ibm_atracker_target.atracker_eventstreams_targets](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/atracker_target) | resource |
+| [ibm_iam_authorization_policy.atracker_cloud_logs](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.atracker_cos](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.atracker_es](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [time_sleep.wait_for_cloud_logs_auth_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [time_sleep.wait_for_event_stream_auth_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [ibm_iam_account_settings.iam_account_settings](https://registry.terraform.io/providers/ibm-cloud/ibm/latest/docs/data-sources/iam_account_settings) | data source |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | A descriptive name used to identify the resource instance. | `string` | n/a | yes |
-| <a name="input_plan"></a> [plan](#input\_plan) | The name of the plan type supported by service. | `string` | `"standard"` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The ID of the resource group where you want to create the service. | `string` | n/a | yes |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | List of resource tag to associate with the instance. | `list(string)` | `[]` | no |
+| <a name="input_activity_tracker_routes"></a> [activity\_tracker\_routes](#input\_activity\_tracker\_routes) | List of routes to be created, maximum four routes are allowed | <pre>list(object({<br/>    locations  = list(string)<br/>    target_ids = list(string)<br/>    route_name = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_cloud_logs_targets"></a> [cloud\_logs\_targets](#input\_cloud\_logs\_targets) | List of Cloud Logs targets to be created | <pre>list(object({<br/>    instance_id                              = string<br/>    target_region                            = optional(string)<br/>    target_name                              = string<br/>    skip_atracker_cloud_logs_iam_auth_policy = optional(bool, false)<br/>  }))</pre> | `[]` | no |
+| <a name="input_cos_targets"></a> [cos\_targets](#input\_cos\_targets) | List of Cloud Object Storage targets to be created | <pre>list(object({<br/>    endpoint                          = string<br/>    bucket_name                       = string<br/>    instance_id                       = string<br/>    api_key                           = optional(string)<br/>    service_to_service_enabled        = optional(bool, true)<br/>    target_region                     = optional(string)<br/>    target_name                       = string<br/>    skip_atracker_cos_iam_auth_policy = optional(bool, false)<br/>  }))</pre> | `[]` | no |
+| <a name="input_eventstreams_targets"></a> [eventstreams\_targets](#input\_eventstreams\_targets) | List of Event Streams targets to be created | <pre>list(object({<br/>    instance_id                      = string<br/>    brokers                          = list(string)<br/>    topic                            = string<br/>    api_key                          = optional(string)<br/>    service_to_service_enabled       = optional(bool, true)<br/>    target_region                    = optional(string)<br/>    target_name                      = string<br/>    skip_atracker_es_iam_auth_policy = optional(bool, false)<br/>  }))</pre> | `[]` | no |
+| <a name="input_global_event_routing_settings"></a> [global\_event\_routing\_settings](#input\_global\_event\_routing\_settings) | Global account settings for event routing. [Learn more](https://cloud.ibm.com/docs/atracker?topic=atracker-settings&interface=ui) | <pre>object({<br/>    default_targets           = optional(list(string), [])<br/>    metadata_region_primary   = string<br/>    metadata_region_backup    = optional(string)<br/>    permitted_target_regions  = list(string)<br/>    private_api_endpoint_only = optional(bool, false)<br/>  })</pre> | `null` | no |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_account_id"></a> [account\_id](#output\_account\_id) | An alpha-numeric value identifying the account ID. |
-| <a name="output_crn"></a> [crn](#output\_crn) | The CRN of the resource instance. |
-| <a name="output_guid"></a> [guid](#output\_guid) | The GUID of the resource instance. |
-| <a name="output_id"></a> [id](#output\_id) | The unique identifier of the resource instance. |
+| <a name="output_activity_tracker_routes"></a> [activity\_tracker\_routes](#output\_activity\_tracker\_routes) | The map of created routes |
+| <a name="output_activity_tracker_settings"></a> [activity\_tracker\_settings](#output\_activity\_tracker\_settings) | AT event routing account global settings. |
+| <a name="output_activity_tracker_targets"></a> [activity\_tracker\_targets](#output\_activity\_tracker\_targets) | The map of created targets |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->
