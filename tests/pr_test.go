@@ -2,74 +2,92 @@
 package test
 
 import (
-	"math/rand"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
+const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
+const fullyConfigurableTerraformDir = "solutions/fully-configurable"
 
-// Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
-const basicExampleDir = "examples/basic"
+var permanentResources map[string]interface{}
 
-var validRegions = []string{
-	"au-syd",
-	"br-sao",
-	"ca-tor",
-	"eu-de",
-	"eu-gb",
-	"eu-es",
-	"jp-osa",
-	"jp-tok",
-	"us-south",
-	"us-east",
+func TestMain(m *testing.M) {
+
+	// Read the YAML file contents
+	var err error
+	permanentResources, err = common.LoadMapFromYaml(yamlLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	os.Exit(m.Run())
 }
 
-func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
-	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  dir,
-		Prefix:        prefix,
-		ResourceGroup: resourceGroup,
-		Region:        validRegions[rand.Intn(len(validRegions))],
+func TestFullyConfigurableActivityTrackerInSchematics(t *testing.T) {
+	t.Parallel()
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Prefix:  "at-fc",
+		TarIncludePatterns: []string{
+			"*.tf",
+			fullyConfigurableTerraformDir + "/*.tf",
+		},
+		ResourceGroup:          resourceGroup,
+		TemplateFolder:         fullyConfigurableTerraformDir,
+		Tags:                   []string{"test-schematic"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
 	})
-	return options
-}
 
-// Consistency test for the basic example
-func TestRunBasicExample(t *testing.T) {
-	t.Parallel()
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+	}
 
-	options := setupOptions(t, "at-basic", basicExampleDir)
-
-	output, err := options.RunTestConsistency()
+	err := options.RunSchematicTest()
 	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunAdvancedExample(t *testing.T) {
+func TestFullyConfigurableActivityTrackerUpgradeInSchematics(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "at-adv", advancedExampleDir)
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Prefix:  "at-fc-upg",
+		TarIncludePatterns: []string{
+			"*.tf",
+			fullyConfigurableTerraformDir + "/*.tf",
+		},
+		ResourceGroup:          resourceGroup,
+		TemplateFolder:         fullyConfigurableTerraformDir,
+		Tags:                   []string{"test-schematic"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
+	})
 
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+	}
 
-// Upgrade test (using advanced example)
-func TestRunUpgradeExample(t *testing.T) {
-	t.Parallel()
-
-	options := setupOptions(t, "at-adv-upg", advancedExampleDir)
-
-	output, err := options.RunTestUpgrade()
+	err := options.RunSchematicUpgradeTest()
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
 	}
 }

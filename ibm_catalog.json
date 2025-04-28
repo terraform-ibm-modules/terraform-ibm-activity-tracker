@@ -1,0 +1,264 @@
+{
+  "products": [
+    {
+      "name": "deploy-arch-ibm-activity-tracker",
+      "label": "Cloud automation for Activity tracker",
+      "product_kind": "solution",
+      "tags": [
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "solution"
+      ],
+      "keywords": [
+        "IaC",
+        "infrastructure as code",
+        "terraform",
+        "solution",
+        "observability",
+        "ATracker"
+      ],
+      "short_description": "Configures IBM Cloud Activity tracker resources",
+      "long_description": "Solution that support configuring IBM Cloud Observability resources for activity tracking.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/blob/main/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-observability-da/main/images/observability-icon.svg",
+      "provider_name": "IBM",
+      "features": [
+        {
+          "title": "Configures IBM Cloud Activity Tracker Event Routing",
+          "description": "Configures an IBM Cloud Activity Tracker route with a Cloud Object Storage and Cloud Logs target."
+        }
+      ],
+      "support_details": "This product is in the community registry and support is handled in the source repo. You can open an issue at [https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/issues](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/issues). Support is not offered through IBM Cloud Support.",
+      "flavors": [
+        {
+          "label": "Fully configurable",
+          "name": "fully-configurable",
+          "install_type": "fullstack",
+          "working_directory": "solutions/fully-configurable",
+          "iam_permissions": [
+            {
+              "service_name": "atracker",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Writer",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ]
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "hs-crypto"
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "kms"
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "cloud-object-storage"
+            }
+          ],
+          "compliance": {
+            "authority": "scc-v3",
+            "profiles": [
+              {
+                "profile_name": "IBM Cloud Framework for Financial Services",
+                "profile_version": "1.7.0"
+              }
+            ]
+          },
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            },
+            {
+              "key": "prefix",
+              "required": true
+            },
+            {
+              "key": "existing_resource_group_name"
+            },
+            {
+              "custom_config": {
+                "type": "region",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "showKinds": [
+                    "region"
+                  ]
+                }
+              },
+              "key": "region",
+              "required": true
+            },
+            {
+              "key": "enable_at_event_routing_to_cos_bucket"
+            },
+            {
+              "key": "enable_at_event_routing_to_cloud_logs"
+            },
+            {
+                "key": "existing_cloud_logs_instance_crn"
+            },
+            {
+              "key": "cos_region"
+            },
+            {
+              "key": "at_cos_bucket_retention_policy"
+            },
+            {
+              "key": "add_bucket_name_suffix"
+            },
+            {
+              "key": "at_cos_target_bucket_name"
+            },
+            {
+              "key": "at_cos_bucket_access_tags"
+            },
+            {
+              "key": "at_cos_target_bucket_class",
+              "options": [
+                {
+                  "displayname": "standard",
+                  "value": "standard"
+                },
+                {
+                  "displayname": "vault",
+                  "value": "vault"
+                },
+                {
+                  "displayname": "cold",
+                  "value": "cold"
+                },
+                {
+                  "displayname": "smart",
+                  "value": "smart"
+                },
+                {
+                  "displayname": "onerate_active",
+                  "value": "onerate_active"
+                }
+              ]
+            },
+            {
+              "key": "management_endpoint_type_for_bucket",
+              "options": [
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "direct",
+                  "value": "direct"
+                }
+              ]
+            },
+            {
+              "key": "existing_cos_instance_crn"
+            },
+            {
+              "key": "existing_at_cos_target_bucket_name"
+            },
+            {
+              "key": "existing_at_cos_target_bucket_endpoint"
+            },
+            {
+              "key": "skip_cos_kms_auth_policy"
+            },
+            {
+              "key": "skip_at_cos_auth_policy"
+            },
+            {
+              "key": "kms_encryption_enabled_buckets"
+            },
+            {
+              "key": "existing_cos_kms_key_crn"
+            },
+            {
+              "key": "existing_kms_instance_crn",
+              "required": true
+            },
+            {
+              "key": "cos_key_name"
+            },
+            {
+              "key": "cos_key_ring_name"
+            },
+            {
+              "key": "ibmcloud_cos_api_key"
+            },
+            {
+              "key": "ibmcloud_kms_api_key"
+            },
+            {
+              "key": "kms_endpoint_type",
+              "options": [
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "private",
+                  "value": "private"
+                }
+              ]
+            }
+          ],
+          "architecture": {
+            "descriptions": "This architecture supports the deployment of IBM Cloud Activity Tracker Event Routing to an Object Storage bucket and Cloud Logs target.",
+            "features": [
+              {
+                "title": "Creates KMS-encrypted Object Storage buckets for log files and Activity Tracker events",
+                "description": "Creates and configures the IBM Cloud Object Storage buckets with archiving and expiration enabled."
+              },
+              {
+                "title": "Creates an IBM Cloud Activity Tracker event route to an Object Storage bucket and Cloud Logs target",
+                "description": "Creates and configures the IBM Cloud Activity Tracker Event Routing to an IBM Cloud Object Storage bucket and IBM Cloud Logs target."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "Activity tracker deployment on IBM Cloud",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-observability-da/main/reference-architecture/deployable-architecture-observability-instances.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This architecture supports creating IBM Cloud Activity Tracker Event Routing to an Object Storage bucket and Cloud Logs instance."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
