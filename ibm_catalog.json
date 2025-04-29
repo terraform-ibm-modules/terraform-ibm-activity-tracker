@@ -236,12 +236,12 @@
           ],
           "dependencies": [
             {
-              "name": "add-ons-beta-deploy-arch-ibm-base-ocp-vpc",
+              "name": "deploy-arch-ibm-cloud-logs",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
               ],
-              "id": "1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global",
+              "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
               "ignore_auto_referencing": [
                 "*"
               ],
@@ -277,7 +277,7 @@
                   "version_input": "existing_cloud_logs_crn"
                 }
               ],
-              "version": "^v3.43.1"
+              "version": "^v1.2.1"
             }
           ],
           "dependency_version_2": true,
