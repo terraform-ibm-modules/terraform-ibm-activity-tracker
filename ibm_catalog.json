@@ -258,6 +258,21 @@
                   "reference_version": true
                 },
                 {
+                  "dependency_input": "existing_kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "kms_encryption_enabled_buckets",
+                  "version_input": "kms_encryption_enabled_buckets",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "existing_kms_key_crn",
+                  "version_input": "existing_cos_kms_key_crn",
+                  "reference_version": true
+                },
+                {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
