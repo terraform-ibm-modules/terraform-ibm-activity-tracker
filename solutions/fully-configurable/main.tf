@@ -66,7 +66,7 @@ locals {
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cos_target_name].id]
   }] : []
 
-  at_cloud_logs_route = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [{
+  at_cloud_logs_route = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_crn != null ? [{
     route_name = local.at_cloud_logs_route_name
     locations  = ["*", "global"]
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
@@ -114,9 +114,9 @@ module "activity_tracker" {
     }
   ] : []
 
-  cloud_logs_targets = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [
+  cloud_logs_targets = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_crn != null ? [
     {
-      instance_id   = var.existing_cloud_logs_instance_crn
+      instance_id   = var.existing_cloud_logs_crn
       target_region = var.region
       target_name   = local.cloud_logs_target_name
     }

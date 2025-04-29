@@ -58,7 +58,7 @@ variable "provider_visibility" {
 # IBM Cloud Logs
 ##############################################################################
 
-variable "existing_cloud_logs_instance_crn" {
+variable "existing_cloud_logs_crn" {
   type        = string
   nullable    = true
   default     = null
