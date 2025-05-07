@@ -82,6 +82,30 @@ variable "enable_at_event_routing_to_cloud_logs" {
   default     = true
 }
 
+variable "cos_target_name" {
+  type        = string
+  description = "Name of the cos target for activity tracker event routing."
+  default     = null
+}
+
+variable "cloud_logs_target_name" {
+  type        = string
+  description = "Name of the cloud logs target for activity tracker event routing."
+  default     = null
+}
+
+variable "at_cos_route_name" {
+  type        = string
+  description = "Name of the cos route for activity tracker event routing."
+  default     = null
+}
+
+variable "at_cloud_logs_route_name" {
+  type        = string
+  description = "Name of the cloud logs route for activity tracker event routing."
+  default     = null
+}
+
 
 ########################################################################################################################
 # COS variables

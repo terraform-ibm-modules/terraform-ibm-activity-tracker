@@ -7,14 +7,14 @@
 
 output "at_cos_target_bucket_name" {
   value       = var.existing_at_cos_target_bucket_name == null ? var.enable_at_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.at_cos_target_bucket_name].bucket_name : null : var.existing_at_cos_target_bucket_name
-  description = "The name of the AT target COS bucket"
+  description = "The name of the Activity Tracker Event Routing cloud object storage target"
 }
 
 
-## Activity Tracker
+## Activity Tracker Event Routing
 output "at_targets" {
   value       = module.activity_tracker.activity_tracker_targets
-  description = "The map of created activity_tracker targets"
+  description = "The map of created Activity Tracker Event Routing targets"
 }
 
 output "at_routes" {

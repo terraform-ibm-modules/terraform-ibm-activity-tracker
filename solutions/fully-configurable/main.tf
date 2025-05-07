@@ -31,10 +31,10 @@ locals {
 
   cos_target_bucket_name     = var.existing_at_cos_target_bucket_name != null ? var.existing_at_cos_target_bucket_name : var.enable_at_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.at_cos_target_bucket_name].bucket_name : null
   cos_target_bucket_endpoint = var.existing_at_cos_target_bucket_endpoint != null ? var.existing_at_cos_target_bucket_endpoint : var.enable_at_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.at_cos_target_bucket_name].s3_endpoint_private : null
-  cos_target_name            = try("${local.prefix}-cos-target", "cos-target")
-  cloud_logs_target_name     = try("${local.prefix}-cloud-logs-target", "cloud-logs-target")
-  at_cos_route_name          = try("${local.prefix}-at-cos-route", "at-cos-route")
-  at_cloud_logs_route_name   = try("${local.prefix}-at-cloud-logs-route", "at-cloud-logs-route")
+  cos_target_name            = var.cos_target_name != null ? var.cos_target_name : try("${local.prefix}-cos-target", "cos-target")
+  cloud_logs_target_name     = var.cloud_logs_target_name != null ? var.cloud_logs_target_name : try("${local.prefix}-cloud-logs-target", "cloud-logs-target")
+  at_cos_route_name          = var.at_cos_route_name != null ? var.at_cos_route_name : try("${local.prefix}-at-cos-route", "at-cos-route")
+  at_cloud_logs_route_name   = var.at_cloud_logs_route_name != null ? var.at_cloud_logs_route_name : try("${local.prefix}-at-cloud-logs-route", "at-cloud-logs-route")
 
 
 
@@ -101,7 +101,6 @@ module "activity_tracker" {
   depends_on = [time_sleep.wait_for_atracker_cos_authorization_policy]
   source     = "../../"
 
-  # Activity Tracker
   cos_targets = var.enable_at_event_routing_to_cos_bucket ? [
     {
       bucket_name                       = local.cos_target_bucket_name

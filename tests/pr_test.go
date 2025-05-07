@@ -3,6 +3,7 @@ package test
 
 import (
 	"log"
+	"math/rand"
 	"os"
 	"testing"
 
@@ -30,7 +31,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestFullyConfigurableActivityTrackerInSchematics(t *testing.T) {
+func TestFullyConfigurableInSchematics(t *testing.T) {
 	t.Parallel()
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -54,13 +55,14 @@ func TestFullyConfigurableActivityTrackerInSchematics(t *testing.T) {
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
 	}
 
 	err := options.RunSchematicTest()
 	assert.Nil(t, err, "This should not have errored")
 }
 
-func TestFullyConfigurableActivityTrackerUpgradeInSchematics(t *testing.T) {
+func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 	t.Parallel()
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -84,6 +86,7 @@ func TestFullyConfigurableActivityTrackerUpgradeInSchematics(t *testing.T) {
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
 	}
 
 	err := options.RunSchematicUpgradeTest()
