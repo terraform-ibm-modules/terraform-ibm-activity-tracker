@@ -72,8 +72,8 @@ locals {
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
   }] : []
 
-  apply_auth_policy = (var.skip_cos_kms_auth_policy || (length(coalesce(local.buckets_config, [])) == 0 || !var.kms_encryption_enabled_buckets)) ? 0 : 1
-  at_routes         = concat(local.at_cos_route, local.at_cloud_logs_route)
+  create_cross_account_auth_policy = !var.skip_cos_kms_auth_policy && var.ibmcloud_kms_api_key != null ? 1 : 0
+  at_routes                        = concat(local.at_cos_route, local.at_cloud_logs_route)
 
 }
 
@@ -210,7 +210,7 @@ data "ibm_iam_account_settings" "iam_cos_account_settings" {
 
 # Create IAM Authorization Policy to allow COS to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "policy" {
-  count = local.apply_auth_policy
+  count = local.create_cross_account_auth_policy
   # Conditionals with providers aren't possible, using ibm.kms as provider incase cross account is enabled
   provider                    = ibm.kms
   source_service_account      = data.ibm_iam_account_settings.iam_cos_account_settings.account_id
