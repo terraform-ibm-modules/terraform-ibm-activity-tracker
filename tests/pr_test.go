@@ -17,6 +17,19 @@ const resourceGroup = "geretain-test-resources"
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 const fullyConfigurableTerraformDir = "solutions/fully-configurable"
 
+var validRegions = []string{
+	"au-syd",
+	"br-sao",
+	"ca-tor",
+	"eu-de",
+	"eu-gb",
+	"eu-es",
+	"jp-osa",
+	"jp-tok",
+	"us-south",
+	"us-east",
+}
+
 var permanentResources map[string]interface{}
 
 func TestMain(m *testing.M) {

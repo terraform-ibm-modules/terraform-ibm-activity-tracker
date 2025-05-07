@@ -12,19 +12,6 @@ import (
 const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
 
-var validRegions = []string{
-	"au-syd",
-	"br-sao",
-	"ca-tor",
-	"eu-de",
-	"eu-gb",
-	"eu-es",
-	"jp-osa",
-	"jp-tok",
-	"us-south",
-	"us-east",
-}
-
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
