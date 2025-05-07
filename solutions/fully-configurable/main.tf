@@ -268,7 +268,7 @@ module "cos_bucket" {
       kms_guid                      = local.existing_kms_guid
       kms_encryption_enabled        = var.kms_encryption_enabled_buckets
       kms_key_crn                   = local.cos_kms_key_crn
-      skip_iam_authorization_policy = true
+      skip_iam_authorization_policy = false
       management_endpoint_type      = var.management_endpoint_type_for_bucket
       storage_class                 = value.class
       resource_instance_id          = local.cos_instance_crn
