@@ -14,8 +14,8 @@ locals {
   cos_key_name              = try("${local.prefix}-${var.cos_key_name}", var.cos_key_name)
   at_cos_target_bucket_name = try("${local.prefix}-${var.at_cos_target_bucket_name}", var.at_cos_target_bucket_name)
 
-  cos_instance_crn  = var.existing_cos_instance_crn != null ? var.existing_cos_instance_crn : null
-  cos_instance_guid = var.existing_cos_instance_crn == null ? null : element(split(":", var.existing_cos_instance_crn), length(split(":", var.existing_cos_instance_crn)) - 3)
+  cos_instance_crn  = var.existing_cos_instance_crn
+  cos_instance_guid = element(split(":", var.existing_cos_instance_crn), length(split(":", var.existing_cos_instance_crn)) - 3)
 
   use_kms_module    = var.kms_encryption_enabled_buckets && var.existing_cos_kms_key_crn == null
   existing_kms_guid = var.kms_encryption_enabled_buckets ? (var.existing_kms_instance_crn != null ? module.kms_instance_crn_parser[0].service_instance : module.existing_kms_key_crn_parser[0].service_instance) : null
@@ -207,7 +207,6 @@ data "ibm_iam_account_settings" "iam_cos_account_settings" {
   provider = ibm.cos
 }
 
-# The auth policy is being created here instead of in COS module because of this limitation: https://github.com/terraform-ibm-modules/terraform-ibm-observability-da/issues/8
 
 # Create IAM Authorization Policy to allow COS to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "policy" {

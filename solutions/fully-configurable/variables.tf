@@ -164,6 +164,10 @@ variable "at_cos_target_bucket_class" {
 variable "existing_cos_instance_crn" {
   type        = string
   description = "The CRN of an existing Cloud Object Storage instance."
+  validation {
+    condition     = var.existing_cos_instance_crn != null
+    error_message = "A value must be passed for 'existing_cos_instance_crn'"
+  }
 }
 
 
