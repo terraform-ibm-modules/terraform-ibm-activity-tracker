@@ -62,7 +62,7 @@ variable "existing_cloud_logs_crn" {
   type        = string
   nullable    = true
   default     = null
-  description = "The CRN of an existing Cloud Object Storage instance. If a CRN is not specified, a new instance of Cloud Object Storage is created."
+  description = "The CRN of an existing Cloud logs instance."
 }
 
 
