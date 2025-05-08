@@ -183,12 +183,17 @@ module "activity_tracker" {
       route_name = "${var.prefix}-route"
     }
   ]
-
+  /*
   # Global Event Routing Settings
+
+  This block shows how to configure global event routing settings.
+  Removing this since it is causing intermittent failure in the pipeline as shown in https://github.ibm.com/GoldenEye/issues/issues/13663
+
   global_event_routing_settings = {
     default_targets           = local.target_ids
     permitted_target_regions  = ["us-south", "eu-de", "us-east", "eu-es", "eu-gb", "au-syd", "br-sao", "ca-tor", "eu-es", "jp-tok", "jp-osa", "in-che", "eu-fr2"]
     metadata_region_primary   = "us-south"
     private_api_endpoint_only = false
   }
+  */
 }
