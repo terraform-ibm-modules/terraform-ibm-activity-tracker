@@ -98,10 +98,10 @@ variable "global_event_routing_settings" {
   default_targets           - The default target per account to configure where auditing events that are not explicitly managed in the accounts routing rules are routed.
   metadata_region_primary   - The location in your IBM Cloud account where the Activity Tracker Event Routing account configuration metadata is stored. If you do not configure a metadata location before you create a target, the location where the first target is created is automatically configured as the metadata location.
   metadata_region_backup    - To store all your metadata in a backup region.
-  permitted_target_regions  - The locations where an account administrator can configure targets to collect auditing events. You can choose any of the supported [locations](https://cloud.ibm.com/docs/atracker?topic=atracker-regions&interface=cli) where Activity Tracker Event Routing is available.
+  permitted_target_regions  - The locations where an account administrator can configure targets to collect auditing events. You can choose any of the supported locations where Activity Tracker Event Routing is available - https://cloud.ibm.com/docs/atracker?topic=atracker-regions&interface=cli.
   private_api_endpoint_only - The type of endpoints that are allowed to manage the Activity Tracker Event Routing account configuration in the account. If you set this true then you cannot access api through public network.
 
-  [Learn more](https://cloud.ibm.com/docs/atracker?topic=atracker-settings&interface=ui)
+  More info: https://cloud.ibm.com/docs/atracker?topic=atracker-settings&interface=ui
   EOF
 
   default = null
