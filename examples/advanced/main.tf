@@ -186,8 +186,7 @@ module "activity_tracker" {
   /*
   # Global Event Routing Settings
 
-  This block shows how to configure global event routing settings.
-  Removing this since it is causing intermittent failure in the pipeline as shown in https://github.ibm.com/GoldenEye/issues/issues/13663
+  Uncomment below to configure global event routing settings.
 
   global_event_routing_settings = {
     default_targets           = local.target_ids
