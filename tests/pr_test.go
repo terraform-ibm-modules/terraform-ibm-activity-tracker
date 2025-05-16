@@ -8,7 +8,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
@@ -106,4 +108,35 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
 	}
+}
+
+func setupAddonOptions(t *testing.T, prefix string) *testaddons.TestAddonOptions {
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing:       t,
+		Prefix:        prefix,
+		ResourceGroup: "geretain-vipin-rg",
+	})
+
+	return options
+}
+
+func TestRunTerraformAddon(t *testing.T) {
+	t.Parallel()
+
+	options := setupAddonOptions(t, "sac1")
+
+	// Using the specialized Terraform helper function
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,              // prefix for unique resource naming
+		"deploy-arch-ibm-icd-redis", // offering name
+		"Standard",                  // offering flavor
+		map[string]interface{}{ // inputs
+			"prefix":                    options.Prefix,
+			"resource_group_name":       "geretain-vipin-rg",
+			"existing_kms_instance_crn": "crn:v1:bluemix:public:hs-crypto:us-south:a/abac0df06b644a9cabc6e44f55b3880e:e6dce284-e80f-46e1-a3c1-830f7adff7a9::",
+		},
+	)
+
+	err := options.RunAddonTest()
+	assert.Nil(t, err, "This should not have errored")
 }
