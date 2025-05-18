@@ -299,7 +299,7 @@
                   "version_input": "existing_cloud_logs_crn"
                 }
               ],
-              "version": "^v1.5.1"
+              "version": "^v1.2.1"
             }
           ],
           "dependency_version_2": true,
