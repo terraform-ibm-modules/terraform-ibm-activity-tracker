@@ -68,7 +68,7 @@ locals {
 
 module "key_protect" {
   source            = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version           = "4.21.6"
+  version           = "5.1.2"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   resource_tags     = var.resource_tags
@@ -91,7 +91,7 @@ module "key_protect" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm"
-  version           = "8.21.8"
+  version           = "9.0.2"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${var.prefix}-cos"
   cos_tags          = var.resource_tags
@@ -104,7 +104,7 @@ locals {
 
 module "buckets" {
   source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "8.21.8"
+  version = "9.0.2"
   bucket_configs = [
     {
       bucket_name                   = local.at_bucket_name
@@ -185,10 +185,20 @@ module "activity_tracker" {
   ]
 
   # Global Event Routing Settings
+  # default_targets           - The default target per account to configure where auditing events that are not explicitly managed in the accounts routing rules are routed.
+  # metadata_region_primary   - The location in your IBM Cloud account where the Activity Tracker Event Routing account configuration metadata is stored. If you do not configure a metadata location before you create a target, the location where the first target is created is automatically configured as the metadata location.
+  # metadata_region_backup    - To store all your metadata in a backup region.
+  # permitted_target_regions  - The locations where an account administrator can configure targets to collect auditing events. You can choose any of the supported locations where Activity Tracker Event Routing is available - https://cloud.ibm.com/docs/atracker?topic=atracker-regions&interface=cli.
+  # private_api_endpoint_only - The type of endpoints that are allowed to manage the Activity Tracker Event Routing account configuration in the account. If you set this true then you cannot access api through public network.
+
+  # Uncomment below to configure global event routing settings.
+
+  /*
   global_event_routing_settings = {
     default_targets           = local.target_ids
     permitted_target_regions  = ["us-south", "eu-de", "us-east", "eu-es", "eu-gb", "au-syd", "br-sao", "ca-tor", "eu-es", "jp-tok", "jp-osa", "in-che", "eu-fr2"]
     metadata_region_primary   = "us-south"
     private_api_endpoint_only = false
   }
+  */
 }
