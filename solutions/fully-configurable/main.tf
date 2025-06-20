@@ -14,7 +14,6 @@ locals {
   cos_key_name              = try("${local.prefix}-${var.cos_key_name}", var.cos_key_name)
   at_cos_target_bucket_name = try("${local.prefix}-${var.at_cos_target_bucket_name}", var.at_cos_target_bucket_name)
 
-  cos_instance_crn  = var.existing_cos_instance_crn
   cos_instance_guid = element(split(":", var.existing_cos_instance_crn), length(split(":", var.existing_cos_instance_crn)) - 3)
 
   use_kms_module    = var.kms_encryption_enabled_buckets && var.existing_cos_kms_key_crn == null
@@ -66,7 +65,7 @@ locals {
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cos_target_name].id]
   }] : []
 
-  at_cloud_logs_route = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_crn != null ? [{
+  at_cloud_logs_route = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [{
     route_name = local.at_cloud_logs_route_name
     locations  = ["*", "global"]
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
@@ -105,7 +104,7 @@ module "activity_tracker" {
     {
       bucket_name                       = local.cos_target_bucket_name
       endpoint                          = local.cos_target_bucket_endpoint
-      instance_id                       = local.cos_instance_crn
+      instance_id                       = var.existing_cos_instance_crn
       target_region                     = local.default_cos_region
       target_name                       = local.cos_target_name
       skip_atracker_cos_iam_auth_policy = var.ibmcloud_cos_api_key != null ? true : var.skip_at_cos_auth_policy
@@ -113,9 +112,9 @@ module "activity_tracker" {
     }
   ] : []
 
-  cloud_logs_targets = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_crn != null ? [
+  cloud_logs_targets = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [
     {
-      instance_id   = var.existing_cloud_logs_crn
+      instance_id   = var.existing_cloud_logs_instance_crn
       target_region = var.region
       target_name   = local.cloud_logs_target_name
     }
@@ -137,9 +136,9 @@ resource "ibm_iam_authorization_policy" "atracker_cos" {
   source_service_account      = data.ibm_iam_account_settings.iam_account_settings.account_id
   source_service_name         = "atracker"
   target_service_name         = "cloud-object-storage"
-  target_resource_instance_id = regex(".*:(.*)::", local.cos_instance_crn)[0]
+  target_resource_instance_id = regex(".*:(.*)::", var.existing_cos_instance_crn)[0]
   roles                       = ["Object Writer"]
-  description                 = "Permit AT service Object Writer access to COS instance ${local.cos_instance_crn}"
+  description                 = "Permit AT service Object Writer access to COS instance ${var.existing_cos_instance_crn}"
 }
 
 #######################################################################################################################
@@ -271,7 +270,7 @@ module "cos_bucket" {
       skip_iam_authorization_policy = false
       management_endpoint_type      = var.management_endpoint_type_for_bucket
       storage_class                 = value.class
-      resource_instance_id          = local.cos_instance_crn
+      resource_instance_id          = var.existing_cos_instance_crn
       region_location               = local.default_cos_region
       force_delete                  = true
       archive_rule                  = local.archive_rule

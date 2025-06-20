@@ -25,8 +25,20 @@
       "provider_name": "IBM",
       "features": [
         {
-          "title": "Configures IBM Cloud Activity Tracker Event Routing",
-          "description": "Configures an IBM Cloud Activity Tracker route with a Cloud Object Storage and Cloud Logs target."
+          "title": "Event Routing",
+          "description": "Configures an IBM Cloud Activity Tracker route with Cloud Object Storage and Cloud Logs target."
+        },
+        {
+          "title": "Object Storage buckets",
+          "description": "Creates buckets required for storing events."
+        },
+        {
+          "title": "Cloud Logs",
+          "description": "Supports creating a new cloud logs instance as well as using an existing one."
+        },
+        {
+          "title": "Enable KMS encryption",
+          "description": "Supports creating a new key, or using an existing one to encrypt the Object Storage bucket. For more details on KMS encryption, refer [this](https://cloud.ibm.com/docs/key-protect?topic=key-protect-about)."
         }
       ],
       "support_details": "This product is in the community registry and support is handled in the source repo. You can open an issue at [https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/issues](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/issues). Support is not offered through IBM Cloud Support.",
@@ -34,6 +46,7 @@
         {
           "label": "Fully configurable",
           "name": "fully-configurable",
+          "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
           "iam_permissions": [
@@ -45,25 +58,25 @@
               ]
             },
             {
+              "service_name": "hs-crypto",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "hs-crypto"
+              ]
             },
             {
+              "service_name": "kms",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "kms"
+              ]
             },
             {
+              "service_name": "cloud-object-storage",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ],
-              "service_name": "cloud-object-storage"
+              ]
             }
           ],
           "compliance": {
@@ -81,6 +94,7 @@
             },
             {
               "key": "provider_visibility",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "private",
@@ -104,6 +118,8 @@
               "key": "existing_resource_group_name"
             },
             {
+              "key": "region",
+              "required": true,
               "custom_config": {
                 "type": "region",
                 "grouping": "deployment",
@@ -113,18 +129,34 @@
                     "region"
                   ]
                 }
-              },
-              "key": "region",
-              "required": true
+              }
             },
             {
-              "key": "enable_at_event_routing_to_cos_bucket"
+              "key": "existing_cloud_logs_instance_crn"
             },
             {
               "key": "enable_at_event_routing_to_cloud_logs"
             },
             {
-                "key": "existing_cloud_logs_crn"
+              "key": "cloud_logs_target_name"
+            },
+            {
+              "key": "at_cloud_logs_route_name"
+            },
+            {
+              "key": "existing_cos_instance_crn"
+            },
+            {
+              "key": "ibmcloud_cos_api_key"
+            },
+            {
+              "key": "enable_at_event_routing_to_cos_bucket"
+            },
+            {
+              "key": "cos_target_name"
+            },
+            {
+              "key": "at_cos_route_name"
             },
             {
               "key": "cos_region"
@@ -168,6 +200,7 @@
             },
             {
               "key": "management_endpoint_type_for_bucket",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "public",
@@ -182,9 +215,6 @@
                   "value": "direct"
                 }
               ]
-            },
-            {
-              "key": "existing_cos_instance_crn"
             },
             {
               "key": "existing_at_cos_target_bucket_name"
@@ -205,8 +235,7 @@
               "key": "existing_cos_kms_key_crn"
             },
             {
-              "key": "existing_kms_instance_crn",
-              "required": true
+              "key": "existing_kms_instance_crn"
             },
             {
               "key": "cos_key_name"
@@ -215,13 +244,11 @@
               "key": "cos_key_ring_name"
             },
             {
-              "key": "ibmcloud_cos_api_key"
-            },
-            {
               "key": "ibmcloud_kms_api_key"
             },
             {
               "key": "kms_endpoint_type",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "public",
@@ -232,23 +259,97 @@
                   "value": "private"
                 }
               ]
-            },
-            {
-              "key": "at_cloud_logs_route_name"
-            },
-            {
-              "key": "at_cos_route_name"
-            },
-            {
-              "key": "cloud_logs_target_name"
-            },
-            {
-              "key": "cos_target_name"
             }
           ],
           "dependencies": [
             {
+              "name": "deploy-arch-ibm-cos",
+              "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Cloud Logs deployable architecture.",
+              "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
+              "version": "v9.0.2",
+              "flavors": [
+                "instance"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_output": "cos_instance_crn",
+                  "version_input": "existing_cos_instance_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-kms",
+              "description": "Enable when you want to create your own root keys to encrypt the buckets.",
+              "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
+              "version": "v5.1.4",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_output": "kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn"
+                },
+                {
+                  "version_input": "kms_encryption_enabled_buckets",
+                  "value": true
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-account-infra-base",
+              "description": "Enable to create a resource groups by default where all the resources will be provisioned and, when you enable the “with Account Settings” option, it also applies baseline security and governance settings. When disabled, provide your own resource group via the `existing_resource_group_name` input.",
+              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
+              "version": "v3.0.7",
+              "flavors": [
+                "resource-group-only",
+                "resource-groups-with-account-settings"
+              ],
+              "default_flavor": "resource-group-only",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": false,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_output": "observability_resource_group_name",
+                  "version_input": "existing_resource_group_name"
+                }
+              ]
+            },
+            {
               "name": "deploy-arch-ibm-cloud-logs",
+              "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by activity tracker.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
@@ -303,16 +404,12 @@
             }
           ],
           "dependency_version_2": true,
+          "terraform_version": "1.10.5",
           "architecture": {
-            "descriptions": "This architecture supports the deployment of IBM Cloud Activity Tracker Event Routing to an Object Storage bucket and Cloud Logs target.",
             "features": [
               {
-                "title": "Creates KMS-encrypted Object Storage buckets for log files and Activity Tracker events",
-                "description": "Creates and configures the IBM Cloud Object Storage buckets with archiving and expiration enabled."
-              },
-              {
-                "title": "Creates an IBM Cloud Activity Tracker event route to an Object Storage bucket and Cloud Logs target",
-                "description": "Creates and configures the IBM Cloud Activity Tracker Event Routing to an IBM Cloud Object Storage bucket and IBM Cloud Logs target."
+                "title": " ",
+                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
               }
             ],
             "diagrams": [
