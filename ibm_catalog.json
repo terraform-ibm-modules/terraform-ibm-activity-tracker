@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-activity-tracker",
-      "label": "Cloud automation for Activity tracker",
+      "label": "Cloud automation for Activity Tracker",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
@@ -18,7 +18,7 @@
         "observability",
         "ATracker"
       ],
-      "short_description": "Configures IBM Cloud Activity tracker Event Routing",
+      "short_description": "Configures IBM Cloud Activity Tracker Event Routing",
       "long_description": "This architecture supports creating and configuring [IBM Cloud Activity Tracker Event Routing](https://cloud.ibm.com/docs/atracker?topic=atracker-getting-started) resources. Activity Tracker Event Routing can be used to manage auditing events at the account-level by configuring targets and routes that define where auditing data is routed",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-activity-tracker/main/images/activity-tracker-icon.svg",
@@ -34,7 +34,7 @@
         },
         {
           "title": "Object Storage Buckets",
-          "description": "Creates buckets required for storing activity tracker events, cloud logs metrics and cloud logs data."
+          "description": "Creates buckets required for storing Activity Tracker events, cloud logs metrics and cloud logs data."
         },
         {
           "title": "Enable KMS Encryption",
@@ -56,7 +56,7 @@
                 "crn:v1:bluemix:public:iam::::serviceRole:Writer",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "notes": "Required for configuring activity tracker event routing to cloud object storage bucket and cloud logs."
+              "notes": "Required for configuring Activity Tracker event routing to cloud object storage bucket and cloud logs."
             },
             {
               "service_name": "logs",
@@ -361,15 +361,12 @@
             },
             {
               "name": "deploy-arch-ibm-cloud-logs",
-              "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by activity tracker.",
+              "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by Activity Tracker.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "ignore_auto_referencing": [
-                "*"
-              ],
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
@@ -427,11 +424,11 @@
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "Activity tracker deployment on IBM Cloud",
+                  "caption": "Activity Tracker deployment on IBM Cloud",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-activity-tracker/main/reference-architecture/deployable-architecture-activity-tracker.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports creating IBM Cloud Activity Tracker Event Routing to an Object Storage bucket and Cloud Logs instance. You can provide an existing Cloud Object Storage (COS) instance or use [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) dependency for creating COS instance. This architecutre will create object storage buckets inside the COS instance for storing the events ingested by activity tracker. <br><br> In addition, it enables encryption for the object storage bucket by provisioning an IBM Key Protect service instance, where a Key Ring and associated Key are created to manage encryption through IBM Cloud Key Management Services (KMS). You can also choose to provide an existing KMS instance.<br><br> Additionally, you can provide and existing Cloud Logs Instance for event analysis or use [Cloud automation for Cloud Logs](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-logs-63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global) dependency for creating a new instance. This architecture will automatically create the COS buckets for cloud logs metrics and logs data."
+                "description": "This architecture supports creating IBM Cloud Activity Tracker Event Routing to an Object Storage bucket and Cloud Logs instance. You can provide an existing Cloud Object Storage (COS) instance or use [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) dependency for creating COS instance. This architecutre will create object storage buckets inside the COS instance for storing the events ingested by Activity Tracker. <br><br> In addition, it enables encryption for the object storage bucket by provisioning an IBM Key Protect service instance, where a Key Ring and associated Key are created to manage encryption through IBM Cloud Key Management Services (KMS). You can also choose to provide an existing KMS instance.<br><br> Additionally, you can provide and existing Cloud Logs Instance for event analysis or use [Cloud automation for Cloud Logs](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-logs-63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global) dependency for creating a new instance. This architecture will automatically create the COS buckets for cloud logs metrics and logs data."
               }
             ]
           }
