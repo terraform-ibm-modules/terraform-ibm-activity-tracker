@@ -276,7 +276,7 @@
           "dependencies": [
             {
               "name": "deploy-arch-ibm-cos",
-              "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Cloud Logs deployable architecture.",
+              "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Activity Tracker Event Routing deployable architecture.",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
               "version": "v9.0.2",
               "flavors": [
