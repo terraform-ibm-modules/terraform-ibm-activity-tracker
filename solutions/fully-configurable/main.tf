@@ -164,7 +164,7 @@ module "kms" {
   providers = {
     ibm = ibm.kms
   }
-  count = (local.use_kms_module && (length(coalesce(local.buckets_config, [])) != 0)) ? 1 : 0 # no need to create any KMS resources if `kms_encryption_enabled_buckets` is false or `existing_cos_kms_key_crn` is provided or `buckets_config` length is 0
+  count                       = (local.use_kms_module && (length(coalesce(local.buckets_config, [])) != 0)) ? 1 : 0 # no need to create any KMS resources if `kms_encryption_enabled_buckets` is false or `existing_cos_kms_key_crn` is provided or `buckets_config` length is 0
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version                     = "5.1.7"
   create_key_protect_instance = false
