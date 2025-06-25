@@ -227,6 +227,13 @@ variable "management_endpoint_type_for_bucket" {
   }
 }
 
+variable "existing_cloud_monitoring_crn" {
+  type        = string
+  nullable    = true
+  default     = null
+  description = "The CRN of an IBM Cloud Monitoring instance to to send IBM Cloud Logs buckets metrics to. If no value passed, metrics are sent to the instance associated to the container's location unless otherwise specified in the Metrics Router service configuration. Applies only if `existing_at_cos_target_bucket_name` is not provided."
+}
+
 ########################################################################################################################
 # KMS variables
 ########################################################################################################################

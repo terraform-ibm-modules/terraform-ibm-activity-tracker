@@ -276,6 +276,12 @@ module "cos_bucket" {
       archive_rule                  = local.archive_rule
       expire_rule                   = local.expire_rule
       retention_rule                = lookup(local.bucket_retention_configs, value.name, null)
+      metrics_monitoring = {
+        usage_metrics_enabled   = true
+        request_metrics_enabled = true
+        # If `existing_cloud_monitoring_crn` is not passed, metrics are sent to the instance associated to the container's location unless otherwise specified in the Metrics Router service configuration.
+        metrics_monitoring_crn = var.existing_cloud_monitoring_crn
+      }
       activity_tracking = {
         read_data_events  = true
         write_data_events = true

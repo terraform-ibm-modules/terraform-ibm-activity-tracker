@@ -229,6 +229,9 @@
               "key": "existing_cos_kms_key_crn"
             },
             {
+              "key": "existing_cloud_monitoring_crn"
+            },
+            {
               "key": "existing_kms_instance_crn"
             },
             {
