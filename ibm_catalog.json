@@ -307,7 +307,7 @@
             },
             {
               "name": "deploy-arch-ibm-kms",
-              "description": "Enable when you want to create your own root keys to encrypt the buckets.",
+              "description": "Enable when you want to create your own managed keys to encrypt the buckets. Select only if existing KMS instance or Key is not provided. ",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "version": "v5.1.4",
               "flavors": [
