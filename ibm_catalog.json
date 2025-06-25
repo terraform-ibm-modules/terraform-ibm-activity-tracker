@@ -339,7 +339,7 @@
             },
             {
               "name": "deploy-arch-ibm-account-infra-base",
-              "description": "Enable to create a resource groups by default where all the resources will be provisioned and, when you enable the “with Account Settings” option, it also applies baseline security and governance settings. When disabled, provide your own resource group via the `existing_resource_group_name` input.",
+              "description": "Enable to create a resource groups by default where all the resources will be provisioned and, when you enable the “with Account Settings” option, it also applies baseline security and governance settings. When disabled, provide an existing resource group as input.",
               "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
               "version": "v3.0.7",
               "flavors": [
@@ -364,7 +364,7 @@
             },
             {
               "name": "deploy-arch-ibm-cloud-logs",
-              "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by Activity Tracker.",
+              "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by Activity Tracker. ",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
