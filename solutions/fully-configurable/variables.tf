@@ -68,7 +68,7 @@ variable "provider_visibility" {
   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
   type        = string
   # Defaulting this to public to workaround https://github.com/IBM-Cloud/terraform-provider-ibm/issues/5977
-  default = "public"
+  default = "private"
 
   validation {
     condition     = contains(["public", "private", "public-and-private"], var.provider_visibility)
@@ -100,7 +100,7 @@ variable "enable_at_event_routing_to_cos_bucket" {
 
 variable "enable_at_event_routing_to_cloud_logs" {
   type        = bool
-  description = "Whether to enable event routing from Activity Tracker to Cloud Log."
+  description = "Whether to enable event routing from Activity Tracker to Cloud Logs instance."
   default     = true
 }
 
@@ -135,7 +135,7 @@ variable "at_cloud_logs_route_name" {
 
 variable "add_bucket_name_suffix" {
   type        = bool
-  description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `cloud_log_data_bucket_name`, `cloud_log_metrics_bucket_name`, `at_cos_target_bucket_name` and `log_archive_cos_bucket_name` variables."
+  description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `at_cos_target_bucket_name` variable."
   default     = true
 }
 
@@ -285,11 +285,11 @@ variable "kms_endpoint_type" {
 variable "cos_key_ring_name" {
   type        = string
   default     = "observability-cos-key-ring"
-  description = "The name of the key ring to create for the Cloud Object Storage bucket key. This name will be used by both the log archive bucket and the IBM Cloud Activity Tracker Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `prefix-value` format."
+  description = "The name of the key ring to create for the Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `prefix-value` format."
 }
 
 variable "cos_key_name" {
   type        = string
   default     = "observability-cos-key"
-  description = "The name of the key to create for the Cloud Object Storage bucket. This name will be used by both the log archive bucket and the IBM Cloud Activity Tracker Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `prefix-value` format."
+  description = "The name of the key to create for encrypting the Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `prefix-value` format."
 }

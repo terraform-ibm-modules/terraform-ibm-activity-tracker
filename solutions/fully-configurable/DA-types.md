@@ -20,7 +20,7 @@ The `at_cos_bucket_retention_policy` input variable allows you to provide the re
 ### Example at_cos_bucket_retention_policy
 
 ```hcl
-at_cos_bucket_retention_policy = {
+{
     default   = 90
     maximum   = 350
     minimum   = 90
