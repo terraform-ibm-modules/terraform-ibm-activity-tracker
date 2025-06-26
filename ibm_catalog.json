@@ -158,13 +158,13 @@
               "key": "existing_cloud_logs_instance_crn"
             },
             {
-              "key": "enable_at_event_routing_to_cloud_logs"
+              "key": "enable_activity_tracker_event_routing_to_cloud_logs"
             },
             {
               "key": "cloud_logs_target_name"
             },
             {
-              "key": "at_cloud_logs_route_name"
+              "key": "activity_tracker_cloud_logs_route_name"
             },
             {
               "key": "existing_cos_instance_crn"
@@ -173,31 +173,31 @@
               "key": "ibmcloud_cos_api_key"
             },
             {
-              "key": "enable_at_event_routing_to_cos_bucket"
+              "key": "enable_activity_tracker_event_routing_to_cos_bucket"
             },
             {
               "key": "cos_target_name"
             },
             {
-              "key": "at_cos_route_name"
+              "key": "activity_tracker_cos_route_name"
             },
             {
               "key": "cos_region"
             },
             {
-              "key": "at_cos_bucket_retention_policy"
+              "key": "activity_tracker_cos_bucket_retention_policy"
             },
             {
               "key": "add_bucket_name_suffix"
             },
             {
-              "key": "at_cos_target_bucket_name"
+              "key": "activity_tracker_cos_target_bucket_name"
             },
             {
-              "key": "at_cos_bucket_access_tags"
+              "key": "activity_tracker_cos_bucket_access_tags"
             },
             {
-              "key": "at_cos_target_bucket_class",
+              "key": "activity_tracker_cos_target_bucket_class",
               "options": [
                 {
                   "displayname": "standard",
@@ -240,16 +240,16 @@
               ]
             },
             {
-              "key": "existing_at_cos_target_bucket_name"
+              "key": "existing_activity_tracker_cos_target_bucket_name"
             },
             {
-              "key": "existing_at_cos_target_bucket_endpoint"
+              "key": "existing_activity_tracker_cos_target_bucket_endpoint"
             },
             {
               "key": "skip_cos_kms_auth_policy"
             },
             {
-              "key": "skip_at_cos_auth_policy"
+              "key": "skip_activity_tracker_cos_auth_policy"
             },
             {
               "key": "kms_encryption_enabled_buckets"

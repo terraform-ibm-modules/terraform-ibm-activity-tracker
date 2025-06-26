@@ -10,9 +10,9 @@ locals {
 
   default_cos_region = var.cos_region != null ? var.cos_region : var.region
 
-  cos_key_ring_name         = try("${local.prefix}-${var.cos_key_ring_name}", var.cos_key_ring_name)
-  cos_key_name              = try("${local.prefix}-${var.cos_key_name}", var.cos_key_name)
-  at_cos_target_bucket_name = try("${local.prefix}-${var.at_cos_target_bucket_name}", var.at_cos_target_bucket_name)
+  cos_key_ring_name                       = try("${local.prefix}-${var.cos_key_ring_name}", var.cos_key_ring_name)
+  cos_key_name                            = try("${local.prefix}-${var.cos_key_name}", var.cos_key_name)
+  activity_tracker_cos_target_bucket_name = try("${local.prefix}-${var.activity_tracker_cos_target_bucket_name}", var.activity_tracker_cos_target_bucket_name)
 
   cos_instance_guid = element(split(":", var.existing_cos_instance_crn), length(split(":", var.existing_cos_instance_crn)) - 3)
 
@@ -28,25 +28,25 @@ locals {
   cos_kms_scope      = length(local.parsed_kms_key_crn) > 0 ? local.parsed_kms_key_crn[6] : null
   kms_account_id     = length(local.parsed_kms_key_crn) > 0 ? split("/", local.cos_kms_scope)[1] : null
 
-  cos_target_bucket_name     = var.existing_at_cos_target_bucket_name != null ? var.existing_at_cos_target_bucket_name : var.enable_at_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.at_cos_target_bucket_name].bucket_name : null
-  cos_target_bucket_endpoint = var.existing_at_cos_target_bucket_endpoint != null ? var.existing_at_cos_target_bucket_endpoint : var.enable_at_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.at_cos_target_bucket_name].s3_endpoint_private : null
-  cos_target_name            = var.cos_target_name != null ? var.cos_target_name : try("${local.prefix}-cos-target", "cos-target")
-  cloud_logs_target_name     = var.cloud_logs_target_name != null ? var.cloud_logs_target_name : try("${local.prefix}-cloud-logs-target", "cloud-logs-target")
-  at_cos_route_name          = var.at_cos_route_name != null ? var.at_cos_route_name : try("${local.prefix}-at-cos-route", "at-cos-route")
-  at_cloud_logs_route_name   = var.at_cloud_logs_route_name != null ? var.at_cloud_logs_route_name : try("${local.prefix}-at-cloud-logs-route", "at-cloud-logs-route")
+  cos_target_bucket_name                 = var.existing_activity_tracker_cos_target_bucket_name != null ? var.existing_activity_tracker_cos_target_bucket_name : var.enable_activity_tracker_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.activity_tracker_cos_target_bucket_name].bucket_name : null
+  cos_target_bucket_endpoint             = var.existing_activity_tracker_cos_target_bucket_endpoint != null ? var.existing_activity_tracker_cos_target_bucket_endpoint : var.enable_activity_tracker_event_routing_to_cos_bucket ? module.cos_bucket[0].buckets[local.activity_tracker_cos_target_bucket_name].s3_endpoint_private : null
+  cos_target_name                        = var.cos_target_name != null ? var.cos_target_name : try("${local.prefix}-cos-target", "cos-target")
+  cloud_logs_target_name                 = var.cloud_logs_target_name != null ? var.cloud_logs_target_name : try("${local.prefix}-cloud-logs-target", "cloud-logs-target")
+  activity_tracker_cos_route_name        = var.activity_tracker_cos_route_name != null ? var.activity_tracker_cos_route_name : try("${local.prefix}-at-cos-route", "at-cos-route")
+  activity_tracker_cloud_logs_route_name = var.activity_tracker_cloud_logs_route_name != null ? var.activity_tracker_cloud_logs_route_name : try("${local.prefix}-at-cloud-logs-route", "at-cloud-logs-route")
 
 
 
-  at_bucket_config = var.existing_at_cos_target_bucket_name == null && var.enable_at_event_routing_to_cos_bucket ? {
-    class = var.at_cos_target_bucket_class
-    name  = local.at_cos_target_bucket_name
-    tag   = var.at_cos_bucket_access_tags
+  activity_tracker_bucket_config = var.existing_activity_tracker_cos_target_bucket_name == null && var.enable_activity_tracker_event_routing_to_cos_bucket ? {
+    class = var.activity_tracker_cos_target_bucket_class
+    name  = local.activity_tracker_cos_target_bucket_name
+    tag   = var.activity_tracker_cos_bucket_access_tags
   } : null
 
 
-  bucket_retention_configs = local.at_bucket_config != null ? { (local.at_cos_target_bucket_name) = var.at_cos_bucket_retention_policy } : null
+  bucket_retention_configs = local.activity_tracker_bucket_config != null ? { (local.activity_tracker_cos_target_bucket_name) = var.activity_tracker_cos_bucket_retention_policy } : null
 
-  buckets_config = local.at_bucket_config != null ? [local.at_bucket_config] : []
+  buckets_config = local.activity_tracker_bucket_config != null ? [local.activity_tracker_bucket_config] : []
 
   archive_rule = length(local.buckets_config) != 0 ? {
     enable = true
@@ -59,20 +59,20 @@ locals {
     days   = 366
   } : null
 
-  at_cos_route = var.enable_at_event_routing_to_cos_bucket ? [{
-    route_name = local.at_cos_route_name
+  activity_tracker_cos_route = var.enable_activity_tracker_event_routing_to_cos_bucket ? [{
+    route_name = local.activity_tracker_cos_route_name
     locations  = ["*", "global"]
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cos_target_name].id]
   }] : []
 
-  at_cloud_logs_route = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [{
-    route_name = local.at_cloud_logs_route_name
+  activity_tracker_cloud_logs_route = var.enable_activity_tracker_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [{
+    route_name = local.activity_tracker_cloud_logs_route_name
     locations  = ["*", "global"]
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
   }] : []
 
   create_cross_account_auth_policy = !var.skip_cos_kms_auth_policy && var.ibmcloud_kms_api_key != null ? 1 : 0
-  at_routes                        = concat(local.at_cos_route, local.at_cloud_logs_route)
+  activity_tracker_routes          = concat(local.activity_tracker_cos_route, local.activity_tracker_cloud_logs_route)
 
 }
 
@@ -100,19 +100,19 @@ module "activity_tracker" {
   depends_on = [time_sleep.wait_for_atracker_cos_authorization_policy]
   source     = "../../"
 
-  cos_targets = var.enable_at_event_routing_to_cos_bucket ? [
+  cos_targets = var.enable_activity_tracker_event_routing_to_cos_bucket ? [
     {
       bucket_name                       = local.cos_target_bucket_name
       endpoint                          = local.cos_target_bucket_endpoint
       instance_id                       = var.existing_cos_instance_crn
       target_region                     = local.default_cos_region
       target_name                       = local.cos_target_name
-      skip_atracker_cos_iam_auth_policy = var.ibmcloud_cos_api_key != null ? true : var.skip_at_cos_auth_policy
+      skip_atracker_cos_iam_auth_policy = var.ibmcloud_cos_api_key != null ? true : var.skip_activity_tracker_cos_auth_policy
       service_to_service_enabled        = true
     }
   ] : []
 
-  cloud_logs_targets = var.enable_at_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [
+  cloud_logs_targets = var.enable_activity_tracker_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [
     {
       instance_id   = var.existing_cloud_logs_instance_crn
       target_region = var.region
@@ -121,7 +121,7 @@ module "activity_tracker" {
   ] : []
 
   # Routes
-  activity_tracker_routes = local.at_routes
+  activity_tracker_routes = local.activity_tracker_routes
 }
 
 resource "time_sleep" "wait_for_atracker_cos_authorization_policy" {
@@ -131,7 +131,7 @@ resource "time_sleep" "wait_for_atracker_cos_authorization_policy" {
 }
 
 resource "ibm_iam_authorization_policy" "atracker_cos" {
-  count                       = var.ibmcloud_cos_api_key != null && !var.skip_at_cos_auth_policy ? 1 : 0
+  count                       = var.ibmcloud_cos_api_key != null && !var.skip_activity_tracker_cos_auth_policy ? 1 : 0
   provider                    = ibm.cos
   source_service_account      = data.ibm_iam_account_settings.iam_account_settings.account_id
   source_service_name         = "atracker"

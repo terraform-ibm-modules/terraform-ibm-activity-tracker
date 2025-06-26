@@ -92,13 +92,13 @@ variable "existing_cloud_logs_instance_crn" {
 # Activity Tracker Event Routing Variables
 ##############################################################################
 
-variable "enable_at_event_routing_to_cos_bucket" {
+variable "enable_activity_tracker_event_routing_to_cos_bucket" {
   type        = bool
   description = "Whether to enable event routing from Activity Tracker to the Object Storage bucket."
   default     = true
 }
 
-variable "enable_at_event_routing_to_cloud_logs" {
+variable "enable_activity_tracker_event_routing_to_cloud_logs" {
   type        = bool
   description = "Whether to enable event routing from Activity Tracker to Cloud Logs instance."
   default     = true
@@ -116,13 +116,13 @@ variable "cloud_logs_target_name" {
   default     = null
 }
 
-variable "at_cos_route_name" {
+variable "activity_tracker_cos_route_name" {
   type        = string
   description = "Name of the cos route for activity tracker event routing."
   default     = null
 }
 
-variable "at_cloud_logs_route_name" {
+variable "activity_tracker_cloud_logs_route_name" {
   type        = string
   description = "Name of the cloud logs route for activity tracker event routing."
   default     = null
@@ -135,7 +135,7 @@ variable "at_cloud_logs_route_name" {
 
 variable "add_bucket_name_suffix" {
   type        = bool
-  description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `at_cos_target_bucket_name` variable."
+  description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `activity_tracker_cos_target_bucket_name` variable."
   default     = true
 }
 
@@ -146,38 +146,38 @@ variable "cos_region" {
 }
 
 
-variable "at_cos_bucket_retention_policy" {
+variable "activity_tracker_cos_bucket_retention_policy" {
   type = object({
     default   = optional(number, 90)
     maximum   = optional(number, 350)
     minimum   = optional(number, 90)
     permanent = optional(bool, false)
   })
-  description = "The retention policy of the IBM Cloud Activity Tracker Event Routing COS target bucket. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/blob/main/solutions/fully-configurable/DA-types.md#at_cos_bucket_retention_policy-)"
+  description = "The retention policy of the IBM Cloud Activity Tracker Event Routing COS target bucket. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/blob/main/solutions/fully-configurable/DA-types.md#activity_tracker_cos_bucket_retention_policy-)"
   default     = null
 }
 
 
-variable "at_cos_target_bucket_name" {
+variable "activity_tracker_cos_target_bucket_name" {
   type        = string
   default     = "at-events-cos-bucket"
   description = "The name of the Cloud Object Storage bucket to create for the Cloud Object Storage target to store AT events. Cloud Object Storage bucket names are globally unique. If the `add_bucket_name_suffix` variable is set to `true`, 4 random characters are added to this name to ensure that the name of the bucket is globally unique. If the prefix input variable is passed, the name of the instance is prefixed to the value in the `<prefix>-value` format."
 }
 
 
-variable "at_cos_bucket_access_tags" {
+variable "activity_tracker_cos_bucket_access_tags" {
   type        = list(string)
   default     = []
   description = "A list of optional access tags to add to the IBM Cloud Activity Tracker Event Routing Cloud Object Storage bucket."
 }
 
 
-variable "at_cos_target_bucket_class" {
+variable "activity_tracker_cos_target_bucket_class" {
   type        = string
   default     = "smart"
   description = "The storage class of the newly provisioned Cloud Object Storage bucket. Specify one of the following values for the storage class: `standard`, `vault`, `cold`, `smart` (default), or `onerate_active`."
   validation {
-    condition     = contains(["standard", "vault", "cold", "smart", "onerate_active"], var.at_cos_target_bucket_class)
+    condition     = contains(["standard", "vault", "cold", "smart", "onerate_active"], var.activity_tracker_cos_target_bucket_class)
     error_message = "Specify one of the following values for the `cos_bucket_class`:  `standard`, `vault`, `cold`, `smart`, or `onerate_active`."
   }
 }
@@ -190,14 +190,14 @@ variable "existing_cos_instance_crn" {
 }
 
 
-variable "existing_at_cos_target_bucket_name" {
+variable "existing_activity_tracker_cos_target_bucket_name" {
   type        = string
   nullable    = true
   default     = null
   description = "The name of an existing bucket within the Cloud Object Storage instance in which to store IBM Cloud Activity Tracker Event Routing. If an existing Cloud Object Storage bucket is not specified, a bucket is created."
 }
 
-variable "existing_at_cos_target_bucket_endpoint" {
+variable "existing_activity_tracker_cos_target_bucket_endpoint" {
   type        = string
   nullable    = true
   default     = null
@@ -211,7 +211,7 @@ variable "skip_cos_kms_auth_policy" {
 }
 
 
-variable "skip_at_cos_auth_policy" {
+variable "skip_activity_tracker_cos_auth_policy" {
   type        = bool
   description = "To skip creating an IAM authorization policy that allows the Activity Traker to write to the Cloud Object Storage instance, set this variable to `true`."
   default     = false
@@ -231,7 +231,7 @@ variable "existing_cloud_monitoring_crn" {
   type        = string
   nullable    = true
   default     = null
-  description = "The CRN of an IBM Cloud Monitoring instance to to send IBM Cloud Logs buckets metrics to. If no value passed, metrics are sent to the instance associated to the container's location unless otherwise specified in the Metrics Router service configuration. Applies only if `existing_at_cos_target_bucket_name` is not provided."
+  description = "The CRN of an IBM Cloud Monitoring instance to to send IBM Cloud Logs buckets metrics to. If no value passed, metrics are sent to the instance associated to the container's location unless otherwise specified in the Metrics Router service configuration. Applies only if `existing_activity_tracker_cos_target_bucket_name` is not provided."
 }
 
 ########################################################################################################################
@@ -276,7 +276,7 @@ variable "existing_kms_instance_crn" {
 variable "existing_cos_kms_key_crn" {
   type        = string
   default     = null
-  description = "Optional. The CRN of an existing key management service (KMS) key to use to encrypt the Cloud Object Storage buckets that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable. To use existing Cloud Object Storage buckets, pass a value for `existing_at_cos_target_bucket_name` input variables."
+  description = "Optional. The CRN of an existing key management service (KMS) key to use to encrypt the Cloud Object Storage buckets that this solution creates. To create a key ring and key, pass a value for the `existing_kms_instance_crn` input variable. To use existing Cloud Object Storage buckets, pass a value for `existing_activity_tracker_cos_target_bucket_name` input variables."
 }
 
 variable "kms_endpoint_type" {
