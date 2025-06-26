@@ -11,6 +11,40 @@ module "resource_group" {
 }
 
 ##############################################################################
+# COS instance
+##############################################################################
+
+module "cos" {
+  source            = "terraform-ibm-modules/cos/ibm"
+  version           = "8.19.3"
+  resource_group_id = module.resource_group.resource_group_id
+  cos_instance_name = "${var.prefix}-cos"
+  cos_tags          = var.resource_tags
+  create_cos_bucket = false
+}
+
+##############################################################################
+# COS bucket
+##############################################################################
+
+locals {
+  logs_bucket_name = "${var.prefix}-logs-data"
+}
+
+module "buckets" {
+  source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
+  version = "8.19.3"
+  bucket_configs = [
+    {
+      bucket_name            = local.logs_bucket_name
+      kms_encryption_enabled = false
+      region_location        = var.region
+      resource_instance_id   = module.cos.cos_instance_id
+    }
+  ]
+}
+
+##############################################################################
 # Cloud Logs
 ##############################################################################
 
