@@ -2,12 +2,19 @@
 package test
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"testing"
 
+	"github.com/gruntwork-io/terratest/modules/files"
+	"github.com/gruntwork-io/terratest/modules/logger"
+	"github.com/gruntwork-io/terratest/modules/random"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
@@ -44,6 +51,40 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func setupexistingOptions(t *testing.T, cloudLogsPrefix string) (preReqTfOptions *terraform.Options, err error) {
+
+	realTerraformDir := "./resources"
+	tempTerraformDir, tempCopyErr := files.CopyTerraformFolderToTemp(realTerraformDir, cloudLogsPrefix)
+	require.NoError(t, tempCopyErr, fmt.Sprintf("error copying resources to temp folder: %s", tempCopyErr))
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+	logger.Log(t, "Tempdir: ", tempTerraformDir)
+	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: tempTerraformDir,
+		Vars: map[string]interface{}{
+			"prefix": cloudLogsPrefix,
+		},
+		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
+		// This is the same as setting the -upgrade=true flag with terraform.
+		Upgrade: true,
+	})
+
+	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, cloudLogsPrefix)
+	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+
+	if existErr != nil {
+		assert.True(t, existErr == nil, "Init and Apply of pre-req resources failed")
+		return existingTerraformOptions, existErr
+	}
+
+	return existingTerraformOptions, nil
+
+}
+
 func TestFullyConfigurableInSchematics(t *testing.T) {
 	t.Parallel()
 
@@ -61,18 +102,42 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		WaitJobCompleteMinutes: 60,
 	})
 
+	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", random.UniqueId())
+
+	existingTerraformOptions, err := setupexistingOptions(t, cloudLogsPrefix)
+
+	if err != nil {
+		assert.True(t, err == nil, "cloud logs instance creation failed")
+		return
+	}
+
+	// Do not destroy pre-req resources if "DO_NOT_DESTROY_ON_FAILURE" is true
+	defer func() {
+		// Check if "DO_NOT_DESTROY_ON_FAILURE" is set
+		envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
+
+		// Do not destroy if tests failed and "DO_NOT_DESTROY_ON_FAILURE" is true
+		if options.Testing.Failed() && strings.ToLower(envVal) == "true" {
+			fmt.Println("Terratest failed. Debug the Test and delete resources manually.")
+		} else {
+			logger.Log(t, "START: Destroy (pre-req resources)")
+			terraform.Destroy(t, existingTerraformOptions)
+			terraform.WorkspaceDelete(t, existingTerraformOptions, cloudLogsPrefix)
+			logger.Log(t, "END: Destroy (pre-req resources)")
+		}
+	}()
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
-		{Name: "existing_cloud_logs_instance_crn", Value: permanentResources["cloud_logs_instance_crn"], DataType: "string"},
+		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
 	}
 
-	err := options.RunSchematicTest()
+	err = options.RunSchematicTest()
 	assert.Nil(t, err, "This should not have errored")
 }
 
@@ -93,17 +158,43 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 		WaitJobCompleteMinutes: 60,
 	})
 
+	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", random.UniqueId())
+
+	existingTerraformOptions, err := setupexistingOptions(t, cloudLogsPrefix)
+
+	if err != nil {
+		assert.True(t, err == nil, "cloud logs instance creation failed")
+		return
+	}
+
+	// Do not destroy pre-req resources if "DO_NOT_DESTROY_ON_FAILURE" is true
+	defer func() {
+		// Check if "DO_NOT_DESTROY_ON_FAILURE" is set
+		envVal, _ := os.LookupEnv("DO_NOT_DESTROY_ON_FAILURE")
+
+		// Do not destroy if tests failed and "DO_NOT_DESTROY_ON_FAILURE" is true
+		if options.Testing.Failed() && strings.ToLower(envVal) == "true" {
+			fmt.Println("Terratest failed. Debug the Test and delete resources manually.")
+		} else {
+			logger.Log(t, "START: Destroy (pre-req resources)")
+			terraform.Destroy(t, existingTerraformOptions)
+			terraform.WorkspaceDelete(t, existingTerraformOptions, cloudLogsPrefix)
+			logger.Log(t, "END: Destroy (pre-req resources)")
+		}
+	}()
+
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
 	}
 
-	err := options.RunSchematicUpgradeTest()
+	err = options.RunSchematicUpgradeTest()
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
 	}
