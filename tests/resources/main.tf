@@ -28,7 +28,8 @@ module "cos" {
 ##############################################################################
 
 locals {
-  logs_bucket_name = "${var.prefix}-logs-data"
+  logs_bucket_name    = "${var.prefix}-logs-data"
+  metrics_bucket_name = "${var.prefix}-metrics-data"
 }
 
 module "buckets" {
@@ -37,6 +38,12 @@ module "buckets" {
   bucket_configs = [
     {
       bucket_name            = local.logs_bucket_name
+      kms_encryption_enabled = false
+      region_location        = var.region
+      resource_instance_id   = module.cos.cos_instance_id
+    },
+    {
+      bucket_name            = local.metrics_bucket_name
       kms_encryption_enabled = false
       region_location        = var.region
       resource_instance_id   = module.cos.cos_instance_id

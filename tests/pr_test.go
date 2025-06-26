@@ -102,7 +102,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		WaitJobCompleteMinutes: 60,
 	})
 
-	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", random.UniqueId())
+	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueId()))
 
 	existingTerraformOptions, err := setupexistingOptions(t, cloudLogsPrefix)
 
@@ -158,7 +158,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 		WaitJobCompleteMinutes: 60,
 	})
 
-	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", random.UniqueId())
+	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueId()))
 
 	existingTerraformOptions, err := setupexistingOptions(t, cloudLogsPrefix)
 
