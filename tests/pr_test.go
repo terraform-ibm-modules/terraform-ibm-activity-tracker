@@ -66,6 +66,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "existing_cloud_logs_instance_crn", Value: permanentResources["cloud_logs_instance_crn"], DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
