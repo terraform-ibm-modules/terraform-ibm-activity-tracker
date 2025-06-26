@@ -291,12 +291,12 @@ variable "kms_endpoint_type" {
 
 variable "cos_key_ring_name" {
   type        = string
-  default     = "observability-cos-key-ring"
+  default     = "at-cos-key-ring"
   description = "The name of the key ring to create for the Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `prefix-value` format."
 }
 
 variable "cos_key_name" {
   type        = string
-  default     = "observability-cos-key"
+  default     = "at-cos-key"
   description = "The name of the key to create for encrypting the Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `prefix-value` format."
 }

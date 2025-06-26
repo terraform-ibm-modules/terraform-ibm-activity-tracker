@@ -2,13 +2,14 @@
   "products": [
     {
       "name": "deploy-arch-ibm-activity-tracker",
-      "label": "Cloud automation for Activity Tracker",
+      "label": "Cloud automation for Activity Tracker Event Routing",
       "product_kind": "solution",
       "tags": [
         "ibm_created",
         "target_terraform",
         "terraform",
-        "solution"
+        "solution",
+        "logging_monitoring"
       ],
       "keywords": [
         "IaC",
@@ -34,7 +35,7 @@
         },
         {
           "title": "Object Storage Buckets",
-          "description": "Creates buckets required for storing Activity Tracker events, cloud logs metrics and cloud logs data."
+          "description": "Creates buckets required for storing Activity Tracker events, Cloud Logs metrics and cloud logs data."
         },
         {
           "title": "Enable KMS Encryption",
@@ -114,16 +115,44 @@
             {
               "key": "region",
               "required": true,
-              "custom_config": {
-                "type": "region",
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "config_constraints": {
-                  "showKinds": [
-                    "region"
-                  ]
+              "options": [
+                {
+                  "displayname": "Osaka (jp-osa)",
+                  "value": "jp-osa"
+                },
+                {
+                  "displayname": "Tokyo (jp-tok)",
+                  "value": "jp-tok"
+                },
+                {
+                  "displayname": "Frankfurt (eu-de)",
+                  "value": "eu-de"
+                },
+                {
+                  "displayname": "London (eu-gb)",
+                  "value": "eu-gb"
+                },
+                {
+                  "displayname": "Madrid (eu-es)",
+                  "value": "eu-es"
+                },
+                {
+                  "displayname": "Dallas (us-south)",
+                  "value": "us-south"
+                },
+                {
+                  "displayname": "Toronto (ca-tor)",
+                  "value": "ca-tor"
+                },
+                {
+                  "displayname": "Washington (us-east)",
+                  "value": "us-east"
+                },
+                {
+                  "displayname": "Sao Paulo (br-sao)",
+                  "value": "br-sao"
                 }
-              }
+              ]
             },
             {
               "key": "existing_cloud_logs_instance_crn"
