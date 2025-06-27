@@ -1,0 +1,1 @@
+The terraform code in this directory is used for creating cloud logs instance used by activity tracker tests.
