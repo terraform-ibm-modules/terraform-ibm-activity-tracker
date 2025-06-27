@@ -227,7 +227,7 @@ variable "management_endpoint_type_for_bucket" {
   }
 }
 
-variable "existing_cloud_monitoring_crn" {
+variable "existing_monitoring_crn" {
   type        = string
   nullable    = true
   default     = null

@@ -279,8 +279,8 @@ module "cos_bucket" {
       metrics_monitoring = {
         usage_metrics_enabled   = true
         request_metrics_enabled = true
-        # If `existing_cloud_monitoring_crn` is not passed, metrics are sent to the instance associated to the container's location unless otherwise specified in the Metrics Router service configuration.
-        metrics_monitoring_crn = var.existing_cloud_monitoring_crn
+        # If `existing_monitoring_crn` is not passed, metrics are sent to the instance associated to the container's location unless otherwise specified in the Metrics Router service configuration.
+        metrics_monitoring_crn = var.existing_monitoring_crn
       }
       activity_tracking = {
         read_data_events  = true
