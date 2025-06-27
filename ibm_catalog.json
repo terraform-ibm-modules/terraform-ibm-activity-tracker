@@ -407,6 +407,7 @@
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
+              "version": "v1.5.0",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
@@ -454,8 +455,35 @@
                   "dependency_output": "cloud_logs_crn",
                   "version_input": "existing_cloud_logs_instance_crn"
                 }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-cloud-monitoring",
+              "description": "Enable IBM Cloud Monitoring to gain operational visibility into your cloud storage buckets. ",
+              "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
+              "version": "v1.2.14",
+              "flavors": [
+                "fully-configurable"
               ],
-              "version": "v1.5.0"
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_output": "cloud_monitoring_crn",
+                  "version_input": "existing_monitoring_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                }
+              ]
             }
           ],
           "dependency_version_2": true,
