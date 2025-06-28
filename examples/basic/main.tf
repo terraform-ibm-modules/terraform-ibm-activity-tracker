@@ -20,7 +20,7 @@ locals {
 
 module "event_streams" {
   source            = "terraform-ibm-modules/event-streams/ibm"
-  version           = "3.4.2"
+  version           = "4.0.1"
   es_name           = "${var.prefix}-eventsteams"
   tags              = var.resource_tags
   region            = var.region
