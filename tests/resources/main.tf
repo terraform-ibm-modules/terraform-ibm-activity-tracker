@@ -56,13 +56,12 @@ module "buckets" {
 ##############################################################################
 
 module "cloud_logs" {
-  source               = "terraform-ibm-modules/observability-instances/ibm//modules/cloud_logs"
-  version              = "3.5.3"
-  instance_name        = var.prefix
-  resource_group_id    = module.resource_group.resource_group_id
-  region               = var.region
-  resource_tags        = var.resource_tags
-  enable_platform_logs = false
+  source            = "terraform-ibm-modules/cloud-logs/ibm"
+  version           = "1.5.0"
+  instance_name     = var.prefix
+  resource_group_id = module.resource_group.resource_group_id
+  region            = var.region
+  resource_tags     = var.resource_tags
   data_storage = {
     logs_data = {
       enabled         = true
