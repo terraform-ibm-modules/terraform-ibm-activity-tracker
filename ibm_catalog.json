@@ -554,7 +554,22 @@
               ]
             }
           ],
-          "iam_permissions": [],
+          "iam_permissions": [
+            {
+              "service_name": "All account management services",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "notes": "Required for setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
+            },
+            {
+              "service_name": "atracker",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "notes": "Required for manage event routing account settings."
+            }
+          ],
           "architecture": {
             "features": [
               {
@@ -566,10 +581,10 @@
               {
                 "diagram": {
                   "caption": "Event Routing Account Settings",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-activity-tracker/main/reference-architecture/activity-tracker.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-activity-tracker/main/reference-architecture/deployable-architecture-account-settings.svg",
                   "type": "image/svg+xml"
                 },
-                "description": ""
+                "description": "This architecture supports configuring the Activity Tracker Event Routing Account Settings."
               }
             ]
           }

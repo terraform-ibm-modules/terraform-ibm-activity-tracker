@@ -23,8 +23,10 @@ import (
 const resourceGroup = "geretain-test-resources"
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 const fullyConfigurableTerraformDir = "solutions/fully-configurable"
+const AccountSettingsDADir = "solutions/event-routing-account-settings"
 
 var validRegions = []string{
+	"in-che",
 	"au-syd",
 	"br-sao",
 	"ca-tor",
@@ -198,4 +200,45 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
 	}
+}
+
+func TestRunAccountSettings(t *testing.T) {
+	t.Parallel()
+
+	region := validRegions[rand.Intn(len(validRegions))]
+	prefix := "er"
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	permitted_target_regions := []string{"in-che", "us-south", "eu-de", "us-east", "eu-es", "eu-gb", "au-syd", "br-sao", "ca-tor", "jp-tok", "jp-osa"}
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Region:  region,
+		Prefix:  prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			"modules/metrics_routing" + "/*.tf",
+			AccountSettingsDADir + "/*.tf",
+		},
+		TemplateFolder:         AccountSettingsDADir,
+		Tags:                   []string{"er-da-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
+	})
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "region", Value: region, DataType: "string"},
+		{Name: "metadata_region_primary", Value: "eu-de", DataType: "string"},
+		{Name: "metadata_region_backup", Value: "us-east", DataType: "string"}, // The `backup_metadata_region` should not be same as `primary_metadata_region` so hard-coded the region here
+		{Name: "permitted_target_regions", Value: permitted_target_regions, DataType: "list(string)"},
+	}
+
+	err := options.RunSchematicTest()
+	assert.Nil(t, err, "This should not have errored")
 }
