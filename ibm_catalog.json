@@ -408,7 +408,7 @@
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "version": "v1.5.0",
+              "version": "v1.5.6",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
@@ -462,7 +462,7 @@
               "name": "deploy-arch-ibm-cloud-monitoring",
               "description": "Enable IBM Cloud Monitoring to gain operational visibility into your cloud storage buckets. ",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
-              "version": "v1.2.14",
+              "version": "v1.3.0",
               "flavors": [
                 "fully-configurable"
               ],
