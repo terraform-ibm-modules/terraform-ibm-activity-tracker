@@ -492,7 +492,7 @@
             "features": [
               {
                 "title": " ",
-                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
+                "description": "Configuring IBM Cloud Activity Tracker Event Routing target to an object storage bucket and cloud logs instance."
               }
             ],
             "diagrams": [
@@ -518,10 +518,14 @@
               "key": "ibmcloud_api_key"
             },
             {
-              "key": "region"
-            },
-            {
-              "key": "default_targets"
+              "key": "default_targets",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
             },
             {
               "key": "metadata_region_primary"
@@ -530,7 +534,14 @@
               "key": "metadata_region_backup"
             },
             {
-              "key": "permitted_target_regions"
+              "key": "permitted_target_regions",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
             },
             {
               "key": "private_api_endpoint_only"
@@ -559,22 +570,20 @@
               "service_name": "All account management services",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "notes": "Required for setting up foundational IBM Cloud account components such as IAM settings, trusted profiles, access groups, and resource groups."
+              ]
             },
             {
               "service_name": "atracker",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "notes": "Required for manage event routing account settings."
+              ]
             }
           ],
           "architecture": {
             "features": [
               {
                 "title": " ",
-                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
+                "description": "Configures account settings for Activity Tracker Event Routing "
               }
             ],
             "diagrams": [
