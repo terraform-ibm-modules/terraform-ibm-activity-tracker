@@ -9,7 +9,8 @@
         "target_terraform",
         "terraform",
         "solution",
-        "logging_monitoring"
+        "logging_monitoring",
+        "converged_infra"
       ],
       "keywords": [
         "IaC",
