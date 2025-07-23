@@ -29,15 +29,19 @@ variable "default_targets" {
 }
 
 variable "metadata_region_primary" {
-  description = "Storage location for target, route, and settings metadata in your IBM Cloud account. To store all configuration metadata in a single region, set this value explicitly. For new accounts, creating targets and routes will fail until `metadata_region_primary` is set. If set to `null`, no change is made to the current value."
+  description = "Storage location for target, route, and settings metadata in your IBM Cloud account. To store all configuration metadata in a single region, set this value explicitly."
   type        = string
-  default     = null
+  default     = "us-south"
 }
 
 variable "metadata_region_backup" {
   description = "You can also configure a backup location where the metadata is stored for recovery purposes. The `metadata_region_backup` can't be the same as `metadata_region_primary`."
   type        = string
   default     = null
+  validation {
+    error_message = "`metadata_region_backup` cannot be the same as `metadata_region_primary`."
+    condition = var.metadata_region_backup == null || var.metadata_region_primary != var.metadata_region_backup
+  }
 }
 
 variable "permitted_target_regions" {
