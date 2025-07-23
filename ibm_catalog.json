@@ -508,7 +508,7 @@
           }
         },
         {
-          "label": "Event Routing account Settings",
+          "label": "Event Routing account settings",
           "name": "event-routing-account-settings",
           "index": 2,
           "install_type": "fullstack",

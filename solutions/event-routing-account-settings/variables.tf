@@ -40,7 +40,7 @@ variable "metadata_region_backup" {
   default     = null
   validation {
     error_message = "`metadata_region_backup` cannot be the same as `metadata_region_primary`."
-    condition = var.metadata_region_backup == null || var.metadata_region_primary != var.metadata_region_backup
+    condition     = var.metadata_region_backup == null || var.metadata_region_primary != var.metadata_region_backup
   }
 }
 
