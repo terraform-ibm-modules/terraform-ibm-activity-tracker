@@ -493,7 +493,7 @@
             "features": [
               {
                 "title": " ",
-                "description": "Configuring IBM Cloud Activity Tracker Event Routing target to an object storage bucket and cloud logs instance."
+                "description": "Configures the Activity Tracker Event Routing service to route auditing events to an Object Storage bucket and Cloud Logs target"
               }
             ],
             "diagrams": [
