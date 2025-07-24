@@ -11,7 +11,7 @@ variable "ibmcloud_api_key" {
 variable "provider_visibility" {
   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
   type        = string
-  default     = "private"
+  default     = "public"
 
   validation {
     condition     = contains(["public", "private", "public-and-private"], var.provider_visibility)
@@ -23,24 +23,24 @@ variable "provider_visibility" {
 ########################################################################################################################
 
 variable "default_targets" {
-  description = "Where activity events that are not explicitly managed in the account's routing rules are routed.You can define up to 2 default targets per account. Consider defining a second default target when you want to collect the data in a backup location."
+  description = "Where activity events that are not explicitly managed in the account's routing rules are routed. You can define up to 2 default targets per account. Consider defining a second default target when you want to collect the data in a backup location."
   type        = list(string)
   default     = []
 }
 
-variable "metadata_region_primary" {
+variable "primary_metadata_region" {
   description = "Storage location for target, route, and settings metadata in your IBM Cloud account. To store all configuration metadata in a single region, set this value explicitly."
   type        = string
   default     = "us-south"
 }
 
-variable "metadata_region_backup" {
-  description = "You can also configure a backup location where the metadata is stored for recovery purposes. The `metadata_region_backup` can't be the same as `metadata_region_primary`."
+variable "backup_metadata_region" {
+  description = "You can also configure a backup location where the metadata is stored for recovery purposes. The `backup_metadata_region` can't be the same as `primary_metadata_region`."
   type        = string
   default     = null
   validation {
     error_message = "`metadata_region_backup` cannot be the same as `metadata_region_primary`."
-    condition     = var.metadata_region_backup == null || var.metadata_region_primary != var.metadata_region_backup
+    condition     = var.backup_metadata_region == null || var.primary_metadata_region != var.backup_metadata_region
   }
 }
 
