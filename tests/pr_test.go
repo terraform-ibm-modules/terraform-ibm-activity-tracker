@@ -93,6 +93,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Prefix:  "at-fc",
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		TarIncludePatterns: []string{
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
@@ -136,7 +137,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
-		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
 	}
 
 	err = options.RunSchematicTest()
@@ -149,6 +150,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Prefix:  "at-fc-upg",
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		TarIncludePatterns: []string{
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
@@ -193,7 +195,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
-		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
 	}
 
 	err = options.RunSchematicUpgradeTest()
