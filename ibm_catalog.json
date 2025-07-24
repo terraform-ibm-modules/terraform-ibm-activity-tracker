@@ -529,10 +529,10 @@
               }
             },
             {
-              "key": "metadata_region_primary"
+              "key": "primary_metadata_region"
             },
             {
-              "key": "metadata_region_backup"
+              "key": "backup_metadata_region"
             },
             {
               "key": "permitted_target_regions",
