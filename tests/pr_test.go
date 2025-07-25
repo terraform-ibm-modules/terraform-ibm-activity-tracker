@@ -16,6 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
@@ -23,8 +24,10 @@ import (
 const resourceGroup = "geretain-test-resources"
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 const fullyConfigurableTerraformDir = "solutions/fully-configurable"
+const AccountSettingsDADir = "solutions/event-routing-account-settings"
 
 var validRegions = []string{
+	"in-che",
 	"au-syd",
 	"br-sao",
 	"ca-tor",
@@ -35,6 +38,9 @@ var validRegions = []string{
 	"jp-tok",
 	"us-south",
 	"us-east",
+}
+var IgnoreUpdates = []string{
+	"module.account_routing_settings.ibm_atracker_settings.atracker_settings[0]",
 }
 
 var permanentResources map[string]interface{}
@@ -91,6 +97,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Prefix:  "at-fc",
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		TarIncludePatterns: []string{
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
@@ -134,7 +141,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
-		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
 	}
 
 	err = options.RunSchematicTest()
@@ -147,6 +154,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Prefix:  "at-fc-upg",
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		TarIncludePatterns: []string{
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
@@ -191,11 +199,50 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
-		{Name: "region", Value: validRegions[rand.Intn(len(validRegions))], DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
 	}
 
 	err = options.RunSchematicUpgradeTest()
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
 	}
+}
+
+func TestRunAccountSettings(t *testing.T) {
+	t.Parallel()
+
+	region := validRegions[rand.Intn(len(validRegions))]
+	prefix := "er"
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Region:  region,
+		Prefix:  prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			"modules/metrics_routing" + "/*.tf",
+			AccountSettingsDADir + "/*.tf",
+		},
+		TemplateFolder:         AccountSettingsDADir,
+		Tags:                   []string{"er-da-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
+	})
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "primary_metadata_region", Value: "eu-de", DataType: "string"},
+	}
+
+	err := options.RunSchematicTest()
+	assert.Nil(t, err, "This should not have errored")
 }
