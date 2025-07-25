@@ -16,6 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
@@ -37,6 +38,9 @@ var validRegions = []string{
 	"jp-tok",
 	"us-south",
 	"us-east",
+}
+var IgnoreUpdates = []string{
+	"module.account_routing_settings.ibm_atracker_settings.atracker_settings[0]",
 }
 
 var permanentResources map[string]interface{}
@@ -229,11 +233,14 @@ func TestRunAccountSettings(t *testing.T) {
 		Tags:                   []string{"er-da-test"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 60,
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "metadata_region_primary", Value: "eu-de", DataType: "string"},
+		{Name: "primary_metadata_region", Value: "eu-de", DataType: "string"},
 	}
 
 	err := options.RunSchematicTest()
