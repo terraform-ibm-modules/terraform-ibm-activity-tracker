@@ -20,7 +20,7 @@
         "observability",
         "ATracker"
       ],
-      "short_description": "Create and configures IBM Cloud Acitivity Tracker Event Routing",
+      "short_description": "Create and configures IBM Cloud Activity Tracker Event Routing",
       "long_description": "This architecture supports creating and configuring [IBM Cloud Activity Tracker Event Routing](https://cloud.ibm.com/docs/atracker?topic=atracker-getting-started) resources. Activity Tracker Event Routing can be used to manage auditing events at the account-level by configuring targets and routes that define where auditing data is routed.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-activity-tracker/main/images/activity-tracker-icon.svg",
