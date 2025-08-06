@@ -82,7 +82,7 @@ locals {
 
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.2.1"
+  version                      = "1.3.0"
   existing_resource_group_name = var.existing_resource_group_name
 }
 
@@ -166,7 +166,7 @@ module "kms" {
   }
   count                       = (local.use_kms_module && (length(coalesce(local.buckets_config, [])) != 0)) ? 1 : 0 # no need to create any KMS resources if `kms_encryption_enabled_buckets` is false or `existing_cos_kms_key_crn` is provided or `buckets_config` length is 0
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.1.13"
+  version                     = "5.1.16"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn
