@@ -597,7 +597,8 @@
                 "description": "This architecture supports configuring the Activity Tracker Event Routing Account Settings."
               }
             ]
-          }
+          },
+          "terraform_version": "1.10.5"
         }
       ]
     }
