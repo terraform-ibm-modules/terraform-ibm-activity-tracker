@@ -156,14 +156,6 @@
               ]
             },
             {
-              "key": "cloud_logs_instance_name",
-              "required": true,
-              "type": "string",
-              "description": "Name of the cloud logs instance to be created.",
-              "virtual": true,
-              "default_value": "__NOT_SET__"
-            },
-            {
               "key": "existing_cloud_logs_instance_crn"
             },
             {
@@ -409,14 +401,9 @@
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
               "version": "v1.5.6",
-              "optional": true,
+              "optional": false,
               "on_by_default": true,
               "input_mapping": [
-                {
-                  "dependency_input": "cloud_logs_instance_name",
-                  "version_input": "cloud_logs_instance_name",
-                  "reference_version": true
-                },
                 {
                   "dependency_input": "existing_cos_instance_crn",
                   "version_input": "existing_cos_instance_crn",
