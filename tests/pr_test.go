@@ -135,7 +135,6 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	}()
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
@@ -193,7 +192,6 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
