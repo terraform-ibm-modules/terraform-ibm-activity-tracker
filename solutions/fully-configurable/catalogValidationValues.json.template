@@ -4,6 +4,5 @@
   "kms_encryption_enabled_buckets": true,
   "region": "us-south",
   "prefix": $PREFIX,
-  "existing_cos_instance_crn": $COS_INSTANCE_CRN,
-  "existing_resource_group_name": "geretain-test-resources"
+  "existing_cos_instance_crn": $COS_INSTANCE_CRN
 }

@@ -111,7 +111,11 @@
               "required": true
             },
             {
-              "key": "existing_resource_group_name"
+              "key": "existing_resource_group_name",
+              "type": "string",
+              "description": "Name of the existing resource group to be used.",
+              "virtual": true,
+              "default_value": "__NOT_SET__"
             },
             {
               "key": "region",
@@ -156,7 +160,8 @@
               ]
             },
             {
-              "key": "existing_cloud_logs_instance_crn"
+              "key": "existing_cloud_logs_instance_crn",
+              "required": true
             },
             {
               "key": "enable_activity_tracker_event_routing_to_cloud_logs"
@@ -311,7 +316,7 @@
               "name": "deploy-arch-ibm-cos",
               "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Activity Tracker Event Routing deployable architecture.",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v9.0.2",
+              "version": "v10.2.1",
               "flavors": [
                 "instance"
               ],
@@ -339,7 +344,7 @@
               "name": "deploy-arch-ibm-kms",
               "description": "Enable when you want to create your own managed keys to encrypt the buckets. Select only if existing KMS instance or Key is not provided. ",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
-              "version": "v5.1.4",
+              "version": "v5.1.19",
               "flavors": [
                 "fully-configurable"
               ],
@@ -400,33 +405,13 @@
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "version": "v1.5.6",
-              "optional": false,
+              "version": "v1.6.11",
+              "optional": true,
               "on_by_default": true,
               "input_mapping": [
                 {
-                  "dependency_input": "existing_cos_instance_crn",
-                  "version_input": "existing_cos_instance_crn",
-                  "reference_version": true
-                },
-                {
                   "dependency_input": "existing_monitoring_crn",
                   "version_input": "existing_monitoring_crn",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_kms_instance_crn",
-                  "version_input": "existing_kms_instance_crn",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "kms_encryption_enabled_buckets",
-                  "version_input": "kms_encryption_enabled_buckets",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_kms_key_crn",
-                  "version_input": "existing_cos_kms_key_crn",
                   "reference_version": true
                 },
                 {
@@ -449,7 +434,7 @@
               "name": "deploy-arch-ibm-cloud-monitoring",
               "description": "Enable IBM Cloud Monitoring to gain operational visibility into your cloud storage buckets. ",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
-              "version": "v1.3.0",
+              "version": "v1.6.4",
               "flavors": [
                 "fully-configurable"
               ],

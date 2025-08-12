@@ -22,14 +22,6 @@ variable "ibmcloud_kms_api_key" {
   default     = null
 }
 
-
-variable "existing_resource_group_name" {
-  type        = string
-  description = "The name of an existing resource group to provision the resources. If not provided the default resource group will be used."
-  default     = null
-}
-
-
 variable "region" {
   type        = string
   description = "The region to provision all resources in. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/region) about how to select different regions for different services."
