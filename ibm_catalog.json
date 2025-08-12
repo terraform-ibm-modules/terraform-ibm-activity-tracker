@@ -113,7 +113,7 @@
             {
               "key": "existing_resource_group_name",
               "type": "string",
-              "description": "Name of the existing resource group to be used.",
+              "description": "Name of the existing resource group where add-ons will be deployed.",
               "virtual": true,
               "default_value": "__NOT_SET__"
             },
