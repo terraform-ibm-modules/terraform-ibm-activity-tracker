@@ -334,6 +334,10 @@
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
+                },
+                {
+                  "version_input": "enable_activity_tracker_event_routing_to_cos_bucket",
+                  "value": true
                 }
               ]
             },
