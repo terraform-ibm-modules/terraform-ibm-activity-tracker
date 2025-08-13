@@ -111,7 +111,11 @@
               "required": true
             },
             {
-              "key": "existing_resource_group_name"
+              "key": "existing_resource_group_name",
+              "type": "string",
+              "description": "The name of an existing resource group to provision the resources. If not provided the default resource group will be used.",
+              "virtual": true,
+              "default_value": "__NULL__"
             },
             {
               "key": "region",
@@ -154,14 +158,6 @@
                   "value": "br-sao"
                 }
               ]
-            },
-            {
-              "key": "cloud_logs_instance_name",
-              "required": true,
-              "type": "string",
-              "description": "Name of the cloud logs instance to be created.",
-              "virtual": true,
-              "default_value": "__NOT_SET__"
             },
             {
               "key": "existing_cloud_logs_instance_crn"
@@ -319,10 +315,8 @@
               "name": "deploy-arch-ibm-cos",
               "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Activity Tracker Event Routing deployable architecture.",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v9.0.2",
-              "flavors": [
-                "instance"
-              ],
+              "version": "v10.2.1",
+              "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -340,6 +334,10 @@
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
+                },
+                {
+                  "version_input": "enable_activity_tracker_event_routing_to_cos_bucket",
+                  "value": true
                 }
               ]
             },
@@ -347,10 +345,8 @@
               "name": "deploy-arch-ibm-kms",
               "description": "Enable when you want to create your own managed keys to encrypt the buckets. Select only if existing KMS instance or Key is not provided. ",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
-              "version": "v5.1.4",
-              "flavors": [
-                "fully-configurable"
-              ],
+              "version": "v5.1.19",
+              "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -376,72 +372,15 @@
               ]
             },
             {
-              "name": "deploy-arch-ibm-account-infra-base",
-              "description": "Enable to create a resource groups by default where all the resources will be provisioned and, when you enable the “with Account Settings” option, it also applies baseline security and governance settings. When disabled, provide an existing resource group as input.",
-              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-              "version": "v3.0.7",
-              "flavors": [
-                "resource-group-only",
-                "resource-groups-with-account-settings"
-              ],
-              "default_flavor": "resource-group-only",
-              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "optional": true,
-              "on_by_default": false,
-              "input_mapping": [
-                {
-                  "dependency_input": "prefix",
-                  "version_input": "prefix",
-                  "reference_version": true
-                },
-                {
-                  "dependency_output": "observability_resource_group_name",
-                  "version_input": "existing_resource_group_name"
-                }
-              ]
-            },
-            {
               "name": "deploy-arch-ibm-cloud-logs",
               "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by Activity Tracker. ",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "flavors": [
-                "fully-configurable"
-              ],
+              "flavors": ["fully-configurable"],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "version": "v1.5.6",
+              "version": "v1.6.11",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
-                {
-                  "dependency_input": "cloud_logs_instance_name",
-                  "version_input": "cloud_logs_instance_name",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_cos_instance_crn",
-                  "version_input": "existing_cos_instance_crn",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_monitoring_crn",
-                  "version_input": "existing_monitoring_crn",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_kms_instance_crn",
-                  "version_input": "existing_kms_instance_crn",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "kms_encryption_enabled_buckets",
-                  "version_input": "kms_encryption_enabled_buckets",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_kms_key_crn",
-                  "version_input": "existing_cos_kms_key_crn",
-                  "reference_version": true
-                },
                 {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
@@ -455,6 +394,10 @@
                 {
                   "dependency_output": "cloud_logs_crn",
                   "version_input": "existing_cloud_logs_instance_crn"
+                },
+                {
+                  "version_input": "enable_activity_tracker_event_routing_to_cloud_logs",
+                  "value": true
                 }
               ]
             },
@@ -462,10 +405,8 @@
               "name": "deploy-arch-ibm-cloud-monitoring",
               "description": "Enable IBM Cloud Monitoring to gain operational visibility into your cloud storage buckets. ",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
-              "version": "v1.3.0",
-              "flavors": [
-                "fully-configurable"
-              ],
+              "version": "v1.6.4",
+              "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -569,15 +510,11 @@
           "iam_permissions": [
             {
               "service_name": "All account management services",
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ]
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"]
             },
             {
               "service_name": "atracker",
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ]
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"]
             }
           ],
           "architecture": {

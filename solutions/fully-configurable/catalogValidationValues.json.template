@@ -5,5 +5,6 @@
   "region": "us-south",
   "prefix": $PREFIX,
   "existing_cos_instance_crn": $COS_INSTANCE_CRN,
-  "existing_resource_group_name": "geretain-test-resources"
+  "enable_activity_tracker_event_routing_to_cloud_logs": true,
+  "enable_activity_tracker_event_routing_to_cos_bucket": true
 }

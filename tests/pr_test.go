@@ -135,10 +135,11 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	}()
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
+		{Name: "enable_activity_tracker_event_routing_to_cloud_logs", Value: true, DataType: "bool"},
+		{Name: "enable_activity_tracker_event_routing_to_cos_bucket", Value: true, DataType: "bool"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "region", Value: options.Region, DataType: "string"},
@@ -193,10 +194,11 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "existing_resource_group_name", Value: "Default", DataType: "string"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
+		{Name: "enable_activity_tracker_event_routing_to_cloud_logs", Value: true, DataType: "bool"},
+		{Name: "enable_activity_tracker_event_routing_to_cos_bucket", Value: true, DataType: "bool"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "region", Value: options.Region, DataType: "string"},

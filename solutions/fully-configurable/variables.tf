@@ -22,14 +22,6 @@ variable "ibmcloud_kms_api_key" {
   default     = null
 }
 
-
-variable "existing_resource_group_name" {
-  type        = string
-  description = "The name of an existing resource group to provision the resources. If not provided the default resource group will be used."
-  default     = null
-}
-
-
 variable "region" {
   type        = string
   description = "The region to provision all resources in. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/region) about how to select different regions for different services."
@@ -84,7 +76,7 @@ variable "existing_cloud_logs_instance_crn" {
   type        = string
   nullable    = true
   default     = null
-  description = "The CRN of an existing Cloud logs instance."
+  description = "The CRN of an existing Cloud Logs instance. This value is required and cannot be null if `enable_activity_tracker_event_routing_to_cloud_logs` is set to true."
 }
 
 
@@ -94,14 +86,30 @@ variable "existing_cloud_logs_instance_crn" {
 
 variable "enable_activity_tracker_event_routing_to_cos_bucket" {
   type        = bool
-  description = "Whether to enable event routing from Activity Tracker to the Object Storage bucket."
-  default     = true
+  description = "When set to `true`, you must provide a value for `existing_cos_instance_crn` to enable event routing from Activity Tracker to a Object Storage bucket."
+  default     = false
+
+  validation {
+    condition     = var.enable_activity_tracker_event_routing_to_cos_bucket ? var.existing_cos_instance_crn != null : true
+    error_message = "If 'enable_activity_tracker_event_routing_to_cos_bucket' is set to true, you must provide a value for 'existing_cos_instance_crn'."
+  }
+
+  validation {
+    condition     = var.enable_activity_tracker_event_routing_to_cos_bucket || var.enable_activity_tracker_event_routing_to_cloud_logs
+    error_message = "At least one of 'enable_activity_tracker_event_routing_to_cos_bucket' or 'enable_activity_tracker_event_routing_to_cloud_logs' must be true to route audit events to COS bucket or Cloud Logs instance."
+  }
+
 }
 
 variable "enable_activity_tracker_event_routing_to_cloud_logs" {
   type        = bool
-  description = "Whether to enable event routing from Activity Tracker to Cloud Logs instance."
-  default     = true
+  description = "When set to `true`, you must provide a value for `existing_cloud_logs_instance_crn` to enable event routing from Activity Tracker to a Cloud Logs instance."
+  default     = false
+
+  validation {
+    condition     = var.enable_activity_tracker_event_routing_to_cloud_logs ? var.existing_cloud_logs_instance_crn != null : true
+    error_message = "If 'enable_activity_tracker_event_routing_to_cloud_logs' is set to true, you must provide a value for 'existing_cloud_logs_instance_crn'."
+  }
 }
 
 variable "cos_target_name" {
@@ -182,11 +190,11 @@ variable "activity_tracker_cos_target_bucket_class" {
   }
 }
 
-
 variable "existing_cos_instance_crn" {
   type        = string
-  description = "The CRN of an existing Cloud Object Storage instance."
-  nullable    = false
+  nullable    = true
+  default     = null
+  description = "The CRN of an existing Cloud Object Storage instance. This value is required and cannot be null if `enable_activity_tracker_event_routing_to_cos_bucket` is set to true."
 }
 
 
