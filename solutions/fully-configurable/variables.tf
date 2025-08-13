@@ -93,7 +93,12 @@ variable "enable_activity_tracker_event_routing_to_cos_bucket" {
 variable "enable_activity_tracker_event_routing_to_cloud_logs" {
   type        = bool
   description = "Whether to enable event routing from Activity Tracker to Cloud Logs instance."
-  default     = true
+  default     = false
+
+  validation {
+    condition     = var.enable_activity_tracker_event_routing_to_cloud_logs ? var.existing_cloud_logs_instance_crn != null : true
+    error_message = "If 'enable_activity_tracker_event_routing_to_cloud_logs' is set to true, you must provide a value for 'existing_cloud_logs_instance_crn'."
+  }
 }
 
 variable "cos_target_name" {

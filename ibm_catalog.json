@@ -160,8 +160,7 @@
               ]
             },
             {
-              "key": "existing_cloud_logs_instance_crn",
-              "required": true
+              "key": "existing_cloud_logs_instance_crn"
             },
             {
               "key": "enable_activity_tracker_event_routing_to_cloud_logs"
@@ -391,6 +390,10 @@
                 {
                   "dependency_output": "cloud_logs_crn",
                   "version_input": "existing_cloud_logs_instance_crn"
+                },
+                {
+                  "version_input": "enable_activity_tracker_event_routing_to_cloud_logs",
+                  "value": true
                 }
               ]
             },
