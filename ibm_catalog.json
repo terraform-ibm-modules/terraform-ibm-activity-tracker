@@ -113,7 +113,7 @@
             {
               "key": "existing_resource_group_name",
               "type": "string",
-              "description": "Name of the existing resource group where add-ons will be deployed.",
+              "description": "Name of the existing resource group where dependent DA will be deployed.",
               "virtual": true,
               "default_value": "__NULL__"
             },
@@ -365,31 +365,6 @@
                   "dependency_input": "region",
                   "version_input": "region",
                   "reference_version": true
-                }
-              ]
-            },
-            {
-              "name": "deploy-arch-ibm-account-infra-base",
-              "description": "Enable to create a resource groups by default where all the resources will be provisioned and, when you enable the “with Account Settings” option, it also applies baseline security and governance settings. When disabled, provide an existing resource group as input.",
-              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-              "version": "v3.0.7",
-              "flavors": [
-                "resource-group-only",
-                "resource-groups-with-account-settings"
-              ],
-              "default_flavor": "resource-group-only",
-              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "optional": true,
-              "on_by_default": false,
-              "input_mapping": [
-                {
-                  "dependency_input": "prefix",
-                  "version_input": "prefix",
-                  "reference_version": true
-                },
-                {
-                  "dependency_output": "observability_resource_group_name",
-                  "version_input": "existing_resource_group_name"
                 }
               ]
             },
