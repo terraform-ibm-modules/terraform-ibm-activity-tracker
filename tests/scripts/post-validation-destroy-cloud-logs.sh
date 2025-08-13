@@ -14,6 +14,7 @@ TF_VARS_FILE="terraform.tfvars"
   cd "${TERRAFORM_SOURCE_DIR}"
   echo "Destroying pre-requisite Cloud Logs instance..."
   terraform destroy -input=false -auto-approve -var-file="${TF_VARS_FILE}" || exit 1
+  rm "${TF_VARS_FILE}" || exit 1
 
   echo "Post-validation completed successfully."
 )
