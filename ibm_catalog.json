@@ -113,7 +113,7 @@
             {
               "key": "existing_resource_group_name",
               "type": "string",
-              "description": "Name of the existing resource group where dependent DA will be deployed.",
+              "description": "The name of an existing resource group to provision the resources. If not provided the default resource group will be used.",
               "virtual": true,
               "default_value": "__NULL__"
             },
@@ -378,11 +378,6 @@
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
-                {
-                  "dependency_input": "existing_monitoring_crn",
-                  "version_input": "existing_monitoring_crn",
-                  "reference_version": true
-                },
                 {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
