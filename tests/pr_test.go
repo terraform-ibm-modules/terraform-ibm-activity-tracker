@@ -26,8 +26,8 @@ const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-res
 const fullyConfigurableTerraformDir = "solutions/fully-configurable"
 const AccountSettingsDADir = "solutions/event-routing-account-settings"
 
+// Removed "in-che" from validRegions since it isn’t supported under the Standard plan of Event Streams.
 var validRegions = []string{
-	"in-che",
 	"au-syd",
 	"br-sao",
 	"ca-tor",
