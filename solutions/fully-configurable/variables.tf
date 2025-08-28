@@ -221,7 +221,7 @@ variable "skip_cos_kms_auth_policy" {
 
 variable "skip_activity_tracker_cos_auth_policy" {
   type        = bool
-  description = "To skip creating an IAM authorization policy that allows the Activity Traker to write to the Cloud Object Storage instance, set this variable to `true`."
+  description = "To skip creating an IAM authorization policy that allows the Activity Tracker to write to the Cloud Object Storage instance, set this variable to `true`."
   default     = false
 }
 

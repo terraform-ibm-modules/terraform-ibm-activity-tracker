@@ -256,7 +256,7 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:       t,
-		Prefix:        "at-def",
+		Prefix:        "act-def",
 		ResourceGroup: resourceGroup,
 		QuietMode:     true, // Suppress logs except on failure
 	})
@@ -270,21 +270,20 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 			"region": validRegions[rand.Intn(len(validRegions))],
 		},
 	)
+
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
 
-// TestDependencyPermutations runs dependency permutations for the Event Notifications and all its dependencies
 func TestActivityTrackerDependencyPermutations(t *testing.T) {
-	t.Skip("Skipping dependency permutations until the test is fixed")
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing: t,
-		Prefix:  "at-perm",
+		Prefix:  "app-per",
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-activity-tracker",
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
-				"prefix":                       "at-perm",
+				"prefix":                       "act-per",
 				"region":                       validRegions[rand.Intn(len(validRegions))],
 				"existing_resource_group_name": resourceGroup,
 			},
