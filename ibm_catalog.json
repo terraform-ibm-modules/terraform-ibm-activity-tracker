@@ -316,7 +316,9 @@
               "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Activity Tracker Event Routing deployable architecture.",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
               "version": "v10.2.1",
-              "flavors": ["instance"],
+              "flavors": [
+                "instance"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -346,7 +348,9 @@
               "description": "Enable when you want to create your own managed keys to encrypt the buckets. Select only if existing KMS instance or Key is not provided. ",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "version": "v5.1.19",
-              "flavors": ["fully-configurable"],
+              "flavors": [
+                "fully-configurable"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -375,7 +379,9 @@
               "name": "deploy-arch-ibm-cloud-logs",
               "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by Activity Tracker. ",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "flavors": ["fully-configurable"],
+              "flavors": [
+                "fully-configurable"
+              ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
               "version": "v1.6.11",
               "optional": true,
@@ -406,7 +412,9 @@
               "description": "Enable IBM Cloud Monitoring to gain operational visibility into your cloud storage buckets. ",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
               "version": "v1.6.4",
-              "flavors": ["fully-configurable"],
+              "flavors": [
+                "fully-configurable"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
@@ -510,11 +518,15 @@
           "iam_permissions": [
             {
               "service_name": "All account management services",
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"]
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ]
             },
             {
               "service_name": "atracker",
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"]
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ]
             }
           ],
           "architecture": {
