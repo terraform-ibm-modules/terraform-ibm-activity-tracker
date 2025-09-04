@@ -221,14 +221,14 @@ variable "skip_cos_kms_auth_policy" {
 
 variable "skip_activity_tracker_cos_auth_policy" {
   type        = bool
-  description = "To skip creating an IAM authorization policy that allows the Activity Traker to write to the Cloud Object Storage instance, set this variable to `true`."
+  description = "To skip creating an IAM authorization policy that allows the Activity Tracker to write to the Cloud Object Storage instance, set this variable to `true`."
   default     = false
 }
 
 variable "management_endpoint_type_for_bucket" {
   description = "The type of endpoint for the IBM Terraform provider to use to manage Cloud Object Storage buckets (`public`, `private`, or `direct`). If you are using a private endpoint, make sure that you enable virtual routing and forwarding (VRF) in your account, and that the Terraform runtime can access the IBM Cloud Private network."
   type        = string
-  default     = "private"
+  default     = "direct"
   validation {
     condition     = contains(["public", "private", "direct"], var.management_endpoint_type_for_bucket)
     error_message = "The specified `management_endpoint_type_for_bucket` is not valid. Specify a valid type of endpoint for the IBM Terraform provider to use to manage Cloud Object Storage buckets."
