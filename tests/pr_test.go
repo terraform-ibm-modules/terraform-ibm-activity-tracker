@@ -280,7 +280,7 @@ func TestActivityTrackerDependencyPermutations(t *testing.T) {
 	t.Parallel()
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing: t,
-		Prefix:  "app-per",
+		Prefix:  "act-per",
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-activity-tracker",
 			OfferingFlavor: "fully-configurable",
