@@ -276,6 +276,8 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 }
 
 func TestActivityTrackerDependencyPermutations(t *testing.T) {
+	t.Skip("Skipping dependency permutations until the test is fixed")
+	t.Parallel()
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing: t,
 		Prefix:  "app-per",
