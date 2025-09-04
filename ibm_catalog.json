@@ -377,7 +377,7 @@
             },
             {
               "name": "deploy-arch-ibm-cloud-logs",
-              "description": "Enable this to create an IBM Cloud Logs (ICL) Instance which can be used for storage and analysis of events ingested by Activity Tracker. ",
+              "description": "Configure IBM Cloud Logs to analyse the platform logs.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "fully-configurable"
@@ -409,7 +409,7 @@
             },
             {
               "name": "deploy-arch-ibm-cloud-monitoring",
-              "description": "Enable IBM Cloud Monitoring to gain operational visibility into your cloud storage buckets. ",
+              "description": "Configure IBM Cloud Monitoring to collect the platform metrics.",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
               "version": "v1.6.4",
               "flavors": [
