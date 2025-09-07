@@ -246,7 +246,7 @@ module "cos_bucket" {
   }
   count   = length(coalesce(local.buckets_config, [])) != 0 ? 1 : 0 # no need to call COS module if consumer is using existing COS bucket
   source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "10.2.15"
+  version = "10.2.17"
   bucket_configs = [
     for value in local.buckets_config :
     {
