@@ -22,11 +22,14 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
-// Use existing resource group
+/*
+Global variables
+*/
 const resourceGroup = "geretain-test-resources"
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
 const fullyConfigurableTerraformDir = "solutions/fully-configurable"
 const AccountSettingsDADir = "solutions/event-routing-account-settings"
+const terraformVersion = "terraform_v1.10" // This should match the version in the ibm_catalog.json
 
 // Removed "in-che" from validRegions since it isn’t supported under the Standard plan of Event Streams.
 var validRegions = []string{
@@ -44,7 +47,6 @@ var validRegions = []string{
 var IgnoreUpdates = []string{
 	"module.account_routing_settings.ibm_atracker_settings.atracker_settings[0]",
 }
-
 var permanentResources map[string]interface{}
 
 func TestMain(m *testing.M) {
@@ -59,7 +61,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func setupexistingOptions(t *testing.T, cloudLogsPrefix string) (preReqTfOptions *terraform.Options, err error) {
+func setupExistingOptions(t *testing.T, cloudLogsPrefix string) (preReqTfOptions *terraform.Options, err error) {
 
 	realTerraformDir := "./resources"
 	tempTerraformDir, tempCopyErr := files.CopyTerraformFolderToTemp(realTerraformDir, cloudLogsPrefix)
@@ -109,11 +111,12 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		Tags:                   []string{"test-schematic"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 60,
+		TerraformVersion:       terraformVersion,
 	})
 
 	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueId()))
 
-	existingTerraformOptions, err := setupexistingOptions(t, cloudLogsPrefix)
+	existingTerraformOptions, err := setupExistingOptions(t, cloudLogsPrefix)
 
 	if err != nil {
 		assert.True(t, err == nil, "cloud logs instance creation failed")
@@ -162,16 +165,18 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
 		},
-		ResourceGroup:          resourceGroup,
-		TemplateFolder:         fullyConfigurableTerraformDir,
-		Tags:                   []string{"test-schematic"},
-		DeleteWorkspaceOnFail:  false,
-		WaitJobCompleteMinutes: 60,
+		ResourceGroup:              resourceGroup,
+		TemplateFolder:             fullyConfigurableTerraformDir,
+		Tags:                       []string{"test-schematic"},
+		DeleteWorkspaceOnFail:      false,
+		WaitJobCompleteMinutes:     60,
+		CheckApplyResultForUpgrade: true,
+		TerraformVersion:           terraformVersion,
 	})
 
 	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueId()))
 
-	existingTerraformOptions, err := setupexistingOptions(t, cloudLogsPrefix)
+	existingTerraformOptions, err := setupExistingOptions(t, cloudLogsPrefix)
 
 	if err != nil {
 		assert.True(t, err == nil, "cloud logs instance creation failed")
@@ -237,6 +242,7 @@ func TestRunAccountSettings(t *testing.T) {
 		Tags:                   []string{"er-da-test"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 60,
+		TerraformVersion:       terraformVersion,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: IgnoreUpdates,
 		},
@@ -273,25 +279,4 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 
 	err := options.RunAddonTest()
 	require.NoError(t, err)
-}
-
-func TestActivityTrackerDependencyPermutations(t *testing.T) {
-	t.Skip("Skipping dependency permutations until the test is fixed")
-	t.Parallel()
-	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "act-per",
-		AddonConfig: cloudinfo.AddonConfig{
-			OfferingName:   "deploy-arch-ibm-activity-tracker",
-			OfferingFlavor: "fully-configurable",
-			Inputs: map[string]interface{}{
-				"prefix":                       "act-per",
-				"region":                       validRegions[rand.Intn(len(validRegions))],
-				"existing_resource_group_name": resourceGroup,
-			},
-		},
-	})
-
-	err := options.RunAddonPermutationTest()
-	assert.NoError(t, err, "Dependency permutation test should not fail")
 }

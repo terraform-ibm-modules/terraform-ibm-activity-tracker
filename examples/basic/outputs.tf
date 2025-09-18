@@ -12,11 +12,6 @@ output "resource_group_id" {
   value       = module.resource_group.resource_group_id
 }
 
-output "event_streams_crn" {
-  description = "The CRN of the event stream resource instance."
-  value       = module.event_streams.crn
-}
-
 output "event_routing_targets" {
   value       = module.activity_tracker.activity_tracker_targets
   description = "The created AT event routing target."
