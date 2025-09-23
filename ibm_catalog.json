@@ -291,7 +291,14 @@
               ]
             },
             {
-              "key": "existing_monitoring_crn"
+              "key": "existing_monitoring_crn",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_monitoring_crn' in not valid.",
+                  "value": "^__NULL__$|^crn:(.*:){3}sysdig-monitor:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                }
+              ]
             },
             {
               "key": "existing_kms_instance_crn",
