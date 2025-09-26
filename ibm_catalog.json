@@ -112,10 +112,17 @@
             },
             {
               "key": "existing_resource_group_name",
-              "type": "string",
-              "description": "The name of an existing resource group to provision the resources. If not provided the default resource group will be used.",
-              "virtual": true,
-              "default_value": "__NULL__"
+              "display_name": "resource_group",
+              "default_value": "Default",
+              "description": "The name of an existing resource group to provision the resources.",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
             },
             {
               "key": "region",
