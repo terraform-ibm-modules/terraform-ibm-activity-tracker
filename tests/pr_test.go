@@ -277,6 +277,18 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 		},
 	)
 
+	// Disable target / route creation to prevent hitting quota in account
+	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		{
+			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_metrics_routing_to_cloud_monitoring": false,
+			},
+			Enabled: core.BoolPtr(true),
+		},
+	}
+
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
