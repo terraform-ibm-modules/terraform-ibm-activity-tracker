@@ -15,13 +15,14 @@ module "resource_group" {
 ##############################################################################
 
 module "cos" {
-  source            = "terraform-ibm-modules/cos/ibm"
-  version           = "10.2.21"
-  resource_group_id = module.resource_group.resource_group_id
-  region            = var.region
-  cos_instance_name = "${var.prefix}-cos"
-  cos_tags          = var.resource_tags
-  bucket_name       = "${var.prefix}-bucket"
+  source                 = "terraform-ibm-modules/cos/ibm"
+  version                = "10.2.21"
+  resource_group_id      = module.resource_group.resource_group_id
+  region                 = var.region
+  cos_instance_name      = "${var.prefix}-cos"
+  cos_tags               = var.resource_tags
+  bucket_name            = "${var.prefix}-bucket"
+  kms_encryption_enabled = false
 }
 
 ##############################################################################
@@ -47,7 +48,7 @@ module "activity_tracker" {
       endpoint      = module.cos.s3_endpoint_direct
       instance_id   = module.cos.cos_instance_id
       target_region = var.region
-      target_name   = "${var.prefix}-cos-target"
+      target_name   = local.bucket_target_name
     }
   ]
 
