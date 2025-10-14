@@ -350,7 +350,7 @@
               "name": "deploy-arch-ibm-cos",
               "description": "Enable this to create an IBM Cloud Object Storage(COS) instance. The buckets to store events will be created by the Activity Tracker Event Routing deployable architecture.",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v10.2.21",
+              "version": "v10.4.1",
               "flavors": [
                 "instance"
               ],
@@ -377,7 +377,7 @@
               "name": "deploy-arch-ibm-kms",
               "description": "Enable when you want to create your own managed keys to encrypt the buckets. Select only if existing KMS instance or Key is not provided. ",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
-              "version": "v5.1.27",
+              "version": "v5.3.6",
               "flavors": [
                 "fully-configurable"
               ],
@@ -436,7 +436,7 @@
               "name": "deploy-arch-ibm-cloud-monitoring",
               "description": "Configure IBM Cloud Monitoring to collect the platform metrics.",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
-              "version": "v1.7.2",
+              "version": "v1.8.7",
               "flavors": [
                 "fully-configurable"
               ],
