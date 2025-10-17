@@ -184,7 +184,7 @@
                 }
               },
               "default_value": "Default",
-              "description": "The name of an existing resource group to provision the resources.",
+              "description": "The name of an existing resource group to provision the resources. [Learn more](https://cloud.ibm.com/docs/account?topic=account-rgs&interface=ui#create_rgs) about how to create a resource group.",
               "virtual": true
             },
             {
