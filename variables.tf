@@ -42,7 +42,7 @@ variable "eventstreams_targets" {
 
   validation {
     condition     = alltrue([for es_target in var.eventstreams_targets : (es_target.service_to_service_enabled == true && es_target.api_key == null) || (es_target.service_to_service_enabled == false && es_target.api_key != null)])
-    error_message = "The value of `api_key` should not be provided if 'service_to_service_enabled' is set to tru for event stream targets. If you want to use 'api_key', set 'service_to_service_enabled' to false."
+    error_message = "The value of `api_key` should not be provided if 'service_to_service_enabled' is set to true for event stream targets. If you want to use 'api_key', set 'service_to_service_enabled' to false."
   }
 }
 
