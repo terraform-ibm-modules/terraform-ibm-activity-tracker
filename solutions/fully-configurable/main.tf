@@ -143,7 +143,7 @@ module "kms_instance_crn_parser" {
 }
 
 module "existing_kms_key_crn_parser" {
-  count   = var.existing_kms_instance_crn != null ? 1 : 0
+  count   = var.existing_cos_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
   version = "1.2.0"
   crn     = var.existing_cos_kms_key_crn
