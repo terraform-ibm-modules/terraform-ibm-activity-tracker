@@ -298,10 +298,10 @@ func TestDisabledCosRoutePlanOnly(t *testing.T) {
 	t.Parallel()
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing:       t,
-		Prefix:        "at-dis-cos",
-		ResourceGroup: resourceGroup,
-		QuietMode:     true, // Suppress logs except on failure
+		Testing:                      t,
+		Prefix:                       "at-dis-cos",
+		ResourceGroup:                resourceGroup,
+		QuietMode:                    true, // Suppress logs except on failure
 		SkipInfrastructureDeployment: true,
 	})
 
