@@ -293,3 +293,29 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
+
+func TestDisabledCosRoutePlanOnly(t *testing.T) {
+	t.Parallel()
+
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing:       t,
+		Prefix:        "at-dis-cos",
+		ResourceGroup: resourceGroup,
+		QuietMode:     true, // Suppress logs except on failure
+		SkipInfrastructureDeployment: true,
+	})
+
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,
+		"deploy-arch-ibm-activity-tracker",
+		"fully-configurable",
+		map[string]interface{}{
+			"region":                  validRegions[rand.Intn(len(validRegions))],
+			"existing_resource_group": resourceGroup,
+			"enable_activity_tracker_event_routing_to_cos_bucket": false,
+		},
+	)
+
+	err := options.RunAddonTest()
+	require.NoError(t, err)
+}
