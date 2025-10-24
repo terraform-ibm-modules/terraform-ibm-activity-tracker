@@ -55,7 +55,7 @@ module "activity_tracker" {
   # Activity Tracker route to COS bucket
   activity_tracker_routes = [
     {
-      locations  = ["*", "global"]
+      locations  = ["*"]
       target_ids = [module.activity_tracker.activity_tracker_targets[local.bucket_target_name].id]
       route_name = "${var.prefix}-cos-route"
     }

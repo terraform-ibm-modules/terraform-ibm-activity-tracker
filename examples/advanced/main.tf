@@ -178,7 +178,7 @@ module "activity_tracker" {
   # Activity Tracker route
   activity_tracker_routes = [
     {
-      locations  = ["*", "global"]
+      locations  = ["*"]
       target_ids = local.target_ids
       route_name = "${var.prefix}-route"
     }

@@ -61,13 +61,13 @@ locals {
 
   activity_tracker_cos_route = var.enable_activity_tracker_event_routing_to_cos_bucket ? [{
     route_name = local.activity_tracker_cos_route_name
-    locations  = ["*", "global"]
+    locations  = ["*"]
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cos_target_name].id]
   }] : []
 
   activity_tracker_cloud_logs_route = var.enable_activity_tracker_event_routing_to_cloud_logs && var.existing_cloud_logs_instance_crn != null ? [{
     route_name = local.activity_tracker_cloud_logs_route_name
-    locations  = ["*", "global"]
+    locations  = ["*"]
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
   }] : []
 
