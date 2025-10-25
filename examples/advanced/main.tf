@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.9.3"
+  version           = "1.9.4"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   data_storage = {
@@ -39,7 +39,7 @@ locals {
 
 module "event_streams" {
   source            = "terraform-ibm-modules/event-streams/ibm"
-  version           = "4.2.1"
+  version           = "4.2.2"
   es_name           = "${var.prefix}-eventsteams-instance"
   tags              = var.resource_tags
   region            = var.region
@@ -68,7 +68,7 @@ locals {
 
 module "key_protect" {
   source            = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version           = "5.4.4"
+  version           = "5.4.5"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   resource_tags     = var.resource_tags
