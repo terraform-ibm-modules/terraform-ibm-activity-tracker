@@ -39,7 +39,7 @@ locals {
 
 module "event_streams" {
   source            = "terraform-ibm-modules/event-streams/ibm"
-  version           = "4.2.0"
+  version           = "4.2.1"
   es_name           = "${var.prefix}-eventsteams-instance"
   tags              = var.resource_tags
   region            = var.region
@@ -68,7 +68,7 @@ locals {
 
 module "key_protect" {
   source            = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version           = "5.4.3"
+  version           = "5.4.4"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   resource_tags     = var.resource_tags
