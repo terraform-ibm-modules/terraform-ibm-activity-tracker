@@ -93,15 +93,6 @@
               "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
             }
           ],
-          "compliance": {
-            "authority": "scc-v3",
-            "profiles": [
-              {
-                "profile_name": "IBM Cloud Framework for Financial Services",
-                "profile_version": "1.7.0"
-              }
-            ]
-          },
           "configuration": [
             {
               "key": "ibmcloud_api_key"
@@ -500,7 +491,7 @@
             }
           ],
           "dependency_version_2": true,
-          "terraform_version": "1.10.5",
+          "terraform_version": "1.12.2",
           "architecture": {
             "features": [
               {
@@ -610,7 +601,7 @@
               }
             ]
           },
-          "terraform_version": "1.10.5"
+          "terraform_version": "1.12.2"
         }
       ]
     }
