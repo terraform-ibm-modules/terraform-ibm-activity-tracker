@@ -509,7 +509,8 @@
                 "description": "This architecture supports creating IBM Cloud Activity Tracker Event Routing target to an object storage bucket and cloud logs instance. You can provide an existing Cloud Object Storage (COS) instance or use [Cloud automation for Object Storage](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cos-68921490-2778-4930-ac6d-bae7be6cd958-global) dependency for creating COS instance. This architecture will create object storage buckets inside the COS instance for storing the events ingested by Activity Tracker Event Routing. <br><br> In addition, it enables encryption for the object storage bucket by provisioning an IBM Key Protect service instance, where a Key Ring and associated key are created to manage encryption through IBM Cloud Key Management Services (KMS). You can choose to provide an existing KMS instance as well.<br><br> Additionally, you can use [Cloud automation for Cloud Logs](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-logs-63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global) to create a cloud logs instance or provide an existing cloud logs instance crn for setting it as event routing target. This architecture will automatically create the COS buckets to collect and store auditing events."
               }
             ]
-          }
+          },
+          "ignore_readme": true
         },
         {
           "label": "Event Routing account settings",
@@ -601,7 +602,8 @@
               }
             ]
           },
-          "terraform_version": "1.12.2"
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
         }
       ]
     }
