@@ -32,3 +32,34 @@ output "kms_keys" {
   description = "IDs of new KMS Keys created"
   value       = length(module.kms) > 0 ? module.kms[0].keys : null
 }
+
+##############################################################################
+# Activity Tracker Event Routing Next Steps URLs outputs
+##############################################################################
+
+output "next_steps_text" {
+  value       = "Activity Tracker Event Routing is created"
+  description = "Next steps text"
+}
+
+output "next_step_primary_label" {
+  value       = "Go to Activity Tracker Event Routing overview page"
+  description = "Primary label"
+}
+
+output "next_step_primary_url" {
+  value       = "https://cloud.ibm.com/observability/event-routing/overview"
+  description = "Primary URL"
+}
+
+output "next_step_secondary_label" {
+  value       = "Learn more about Activity Tracker Event Routing"
+  description = "Secondary label"
+}
+
+output "next_step_secondary_url" {
+  value       = "https://cloud.ibm.com/docs/atracker?topic=atracker-getting-started"
+  description = "Secondary URL"
+}
+
+##############################################################################
