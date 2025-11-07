@@ -97,7 +97,7 @@ module "activity_tracker" {
   # AT Event routing route
   activity_tracker_routes = [
     {
-      locations  = ["*", "global"]
+      locations  = ["*"]
       target_ids = local.target_ids
       route_name = "at-route"
     }
