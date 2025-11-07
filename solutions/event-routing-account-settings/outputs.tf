@@ -21,7 +21,7 @@ output "next_step_primary_url" {
 }
 
 output "next_step_secondary_label" {
-  value       = "Learn more about Activity Tracker Event Routing"
+  value       = "Learn more about Activity Tracker Event Routing account settings"
   description = "Secondary label"
 }
 
