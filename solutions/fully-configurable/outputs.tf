@@ -38,7 +38,7 @@ output "kms_keys" {
 ##############################################################################
 
 output "next_steps_text" {
-  value       = "Activity Tracker Event Routing is created"
+  value       = "Activity Tracker Event Routing targets and routes are created"
   description = "Next steps text"
 }
 
