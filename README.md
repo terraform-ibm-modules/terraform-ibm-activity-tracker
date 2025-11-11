@@ -12,8 +12,8 @@ This module supports configuring an IBM Cloud Activity Tracker event routing tar
 ## Overview
 * [terraform-ibm-activity-tracker](#terraform-ibm-activity-tracker)
 * [Examples](./examples)
-    * <div style="display: inline-block;"><a href="./examples/advanced">Advanced example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=at-advanced-example&repository=github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/advanced" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
-    * <div style="display: inline-block;"><a href="./examples/basic">Basic example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=at-basic-example&repository=github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/basic" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * [Advanced example](./examples/advanced)
+    * [Basic example](./examples/basic)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
