@@ -6,12 +6,12 @@
 ##############################################################################
 
 output "next_steps_text" {
-  value       = "Activity Tracker Event Routing account settings are applied"
+  value       = "Activity Tracker Event Routing account settings are configured"
   description = "Next steps text"
 }
 
 output "next_step_primary_label" {
-  value       = "Go to Activity Tracker Event Routing overview page"
+  value       = "Go to Activity Tracker Event Routing overview"
   description = "Primary label"
 }
 

@@ -38,12 +38,12 @@ output "kms_keys" {
 ##############################################################################
 
 output "next_steps_text" {
-  value       = "Activity Tracker Event Routing targets and routes are configured"
+  value       = "Activity Tracker Event Routing has been configured with the targets and routes to manage audit events."
   description = "Next steps text"
 }
 
 output "next_step_primary_label" {
-  value       = "Go to Activity Tracker Event Routing overview page"
+  value       = "Go to Activity Tracker Event Routing overview"
   description = "Primary label"
 }
 
