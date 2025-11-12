@@ -2,7 +2,7 @@
 # Outputs
 ##############################################################################
 ##############################################################################
-# Activity Tracker Event Routing Account Settings  Next Steps URLs outputs
+# Activity Tracker Event Routing Account Settings Next Steps URLs outputs
 ##############################################################################
 
 output "next_steps_text" {
