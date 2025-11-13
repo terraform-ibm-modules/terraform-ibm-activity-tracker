@@ -6,7 +6,7 @@
 ##############################################################################
 
 output "next_steps_text" {
-  value       = "Activity Tracker Event Routing account settings are configured"
+  value       = "Activity Tracker Event Routing account settings are configured."
   description = "Next steps text"
 }
 
