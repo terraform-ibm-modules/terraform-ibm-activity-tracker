@@ -1,6 +1,14 @@
 #######################################################################################################################
 # Local Variables
 #######################################################################################################################
+
+module "crn_parser" {
+  count   = var.existing_cos_instance_crn != null ? 1 : 0
+  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
+  version = "1.3.0"
+  crn     = var.existing_cos_instance_crn
+}
+
 locals {
   prefix = var.prefix != null ? (var.prefix != "" ? var.prefix : null) : null
 }
@@ -14,7 +22,7 @@ locals {
   cos_key_name                            = try("${local.prefix}-${var.cos_key_name}", var.cos_key_name)
   activity_tracker_cos_target_bucket_name = try("${local.prefix}-${var.activity_tracker_cos_target_bucket_name}", var.activity_tracker_cos_target_bucket_name)
 
-  cos_instance_guid = element(split(":", var.existing_cos_instance_crn), length(split(":", var.existing_cos_instance_crn)) - 3)
+  cos_instance_guid = try(module.crn_parser[0].service_instance, null)
 
   use_kms_module    = var.kms_encryption_enabled_buckets && var.existing_cos_kms_key_crn == null
   existing_kms_guid = var.kms_encryption_enabled_buckets ? (var.existing_kms_instance_crn != null ? module.kms_instance_crn_parser[0].service_instance : module.existing_kms_key_crn_parser[0].service_instance) : null
