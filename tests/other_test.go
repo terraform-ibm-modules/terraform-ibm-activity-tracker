@@ -1,11 +1,12 @@
 package test
 
 import (
-	"math/rand"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 )
 
 // Ensure every example directory has a corresponding test
@@ -18,7 +19,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		TerraformDir:  dir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
-		Region:        validRegions[rand.Intn(len(validRegions))],
+		Region:        validRegions[common.CryptoIntn(len(validRegions))],
 	})
 	return options
 }

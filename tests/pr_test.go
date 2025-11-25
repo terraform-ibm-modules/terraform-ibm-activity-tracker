@@ -4,7 +4,6 @@ package test
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"testing"
@@ -221,7 +220,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 func TestRunAccountSettings(t *testing.T) {
 	t.Parallel()
 
-	region := validRegions[rand.Intn(len(validRegions))]
+	region := validRegions[common.CryptoIntn(len(validRegions))]
 	prefix := "er"
 
 	// Verify ibmcloud_api_key variable is set
@@ -273,7 +272,7 @@ func TestActivityTrackerDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-activity-tracker",
 		"fully-configurable",
 		map[string]interface{}{
-			"region":                  validRegions[rand.Intn(len(validRegions))],
+			"region":                  validRegions[common.CryptoIntn(len(validRegions))],
 			"existing_resource_group": resourceGroup,
 		},
 	)
@@ -310,7 +309,7 @@ func TestDisabledCosRoutePlanOnly(t *testing.T) {
 		"deploy-arch-ibm-activity-tracker",
 		"fully-configurable",
 		map[string]interface{}{
-			"region":                  validRegions[rand.Intn(len(validRegions))],
+			"region":                  validRegions[common.CryptoIntn(len(validRegions))],
 			"existing_resource_group": resourceGroup,
 			"enable_activity_tracker_event_routing_to_cos_bucket": false,
 		},
