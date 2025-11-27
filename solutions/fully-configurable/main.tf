@@ -2,13 +2,6 @@
 # Local Variables
 #######################################################################################################################
 
-module "crn_parser" {
-  count   = var.existing_cos_instance_crn != null ? 1 : 0
-  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.3.0"
-  crn     = var.existing_cos_instance_crn
-}
-
 locals {
   prefix = var.prefix != null ? (var.prefix != "" ? var.prefix : null) : null
 }
@@ -190,6 +183,13 @@ module "kms" {
 #######################################################################################################################
 # COS
 #######################################################################################################################
+
+module "crn_parser" {
+  count   = var.existing_cos_instance_crn != null ? 1 : 0
+  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
+  version = "1.3.0"
+  crn     = var.existing_cos_instance_crn
+}
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
