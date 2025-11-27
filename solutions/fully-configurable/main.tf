@@ -3,11 +3,8 @@
 #######################################################################################################################
 
 locals {
+
   prefix = var.prefix != null ? (var.prefix != "" ? var.prefix : null) : null
-}
-
-locals {
-
 
   default_cos_region = var.cos_region != null ? var.cos_region : var.region
 
