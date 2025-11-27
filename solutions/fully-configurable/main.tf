@@ -191,13 +191,6 @@ module "cos_crn_parser" {
   crn     = var.existing_cos_instance_crn
 }
 
-module "crn_parser" {
-  count   = var.existing_cos_instance_crn != null ? 1 : 0
-  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.3.0"
-  crn     = var.existing_cos_instance_crn
-}
-
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
   depends_on      = [ibm_iam_authorization_policy.policy]
