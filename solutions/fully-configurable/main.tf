@@ -69,7 +69,7 @@ locals {
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
   }] : []
 
-  create_cross_account_auth_policy = !var.skip_cos_kms_auth_policy && var.ibmcloud_kms_api_key != null ? 1 : 0
+  create_cross_account_auth_policy = !var.skip_cos_kms_auth_policy && var.ibmcloud_cos_api_key != null && var.enable_activity_tracker_event_routing_to_cos_bucket ? 1 : 0
   activity_tracker_routes          = concat(local.activity_tracker_cos_route, local.activity_tracker_cloud_logs_route)
 
 }
