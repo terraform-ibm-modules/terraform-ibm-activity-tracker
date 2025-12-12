@@ -3,6 +3,7 @@
 #######################################################################################################################
 
 locals {
+
   prefix = var.prefix != null ? (var.prefix != "" ? var.prefix : null) : null
 
   default_cos_region = var.cos_region != null ? var.cos_region : var.region
@@ -11,7 +12,7 @@ locals {
   cos_key_name                            = try("${local.prefix}-${var.cos_key_name}", var.cos_key_name)
   activity_tracker_cos_target_bucket_name = try("${local.prefix}-${var.activity_tracker_cos_target_bucket_name}", var.activity_tracker_cos_target_bucket_name)
 
-  cos_instance_guid = element(split(":", var.existing_cos_instance_crn), length(split(":", var.existing_cos_instance_crn)) - 3)
+  cos_instance_guid = try(module.cos_crn_parser[0].service_instance, null)
 
   use_kms_module    = var.kms_encryption_enabled_buckets && var.existing_cos_kms_key_crn == null
   existing_kms_guid = var.kms_encryption_enabled_buckets ? (var.existing_kms_instance_crn != null ? module.kms_instance_crn_parser[0].service_instance : module.existing_kms_key_crn_parser[0].service_instance) : null
@@ -68,8 +69,9 @@ locals {
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
   }] : []
 
-  create_cross_account_auth_policy = !var.skip_cos_kms_auth_policy && var.ibmcloud_kms_api_key != null ? 1 : 0
-  activity_tracker_routes          = concat(local.activity_tracker_cos_route, local.activity_tracker_cloud_logs_route)
+  create_cross_account_cos_kms_auth_policy      = !var.skip_cos_kms_auth_policy && var.ibmcloud_kms_api_key != null && var.existing_cos_instance_crn != null ? 1 : 0
+  create_cross_account_atracker_cos_auth_policy = var.ibmcloud_cos_api_key != null && !var.skip_activity_tracker_cos_auth_policy && var.existing_cos_instance_crn != null ? 1 : 0
+  activity_tracker_routes                       = concat(local.activity_tracker_cos_route, local.activity_tracker_cloud_logs_route)
 
 }
 
@@ -117,7 +119,7 @@ resource "time_sleep" "wait_for_atracker_cos_authorization_policy" {
 }
 
 resource "ibm_iam_authorization_policy" "atracker_cos" {
-  count                       = var.ibmcloud_cos_api_key != null && !var.skip_activity_tracker_cos_auth_policy ? 1 : 0
+  count                       = local.create_cross_account_atracker_cos_auth_policy
   provider                    = ibm.cos
   source_service_account      = data.ibm_iam_account_settings.iam_account_settings.account_id
   source_service_name         = "atracker"
@@ -180,6 +182,13 @@ module "kms" {
 # COS
 #######################################################################################################################
 
+module "cos_crn_parser" {
+  count   = var.existing_cos_instance_crn != null ? 1 : 0
+  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
+  version = "1.3.0"
+  crn     = var.existing_cos_instance_crn
+}
+
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
   depends_on      = [ibm_iam_authorization_policy.policy]
@@ -195,7 +204,7 @@ data "ibm_iam_account_settings" "iam_cos_account_settings" {
 
 # Create IAM Authorization Policy to allow COS to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "policy" {
-  count = local.create_cross_account_auth_policy
+  count = local.create_cross_account_cos_kms_auth_policy
   # Conditionals with providers aren't possible, using ibm.kms as provider incase cross account is enabled
   provider                    = ibm.kms
   source_service_account      = data.ibm_iam_account_settings.iam_cos_account_settings.account_id
