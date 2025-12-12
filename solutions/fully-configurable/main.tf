@@ -69,8 +69,9 @@ locals {
     target_ids = [module.activity_tracker.activity_tracker_targets[local.cloud_logs_target_name].id]
   }] : []
 
-  create_cross_account_auth_policy = !var.skip_cos_kms_auth_policy && var.ibmcloud_cos_api_key != null && var.enable_activity_tracker_event_routing_to_cos_bucket ? 1 : 0
-  activity_tracker_routes          = concat(local.activity_tracker_cos_route, local.activity_tracker_cloud_logs_route)
+  create_cross_account_cos_kms_auth_policy      = !var.skip_cos_kms_auth_policy && var.ibmcloud_kms_api_key != null && var.existing_cos_instance_crn != null ? 1 : 0
+  create_cross_account_atracker_cos_auth_policy = var.ibmcloud_cos_api_key != null && !var.skip_activity_tracker_cos_auth_policy && var.existing_cos_instance_crn != null ? 1 : 0
+  activity_tracker_routes                       = concat(local.activity_tracker_cos_route, local.activity_tracker_cloud_logs_route)
 
 }
 
@@ -118,7 +119,7 @@ resource "time_sleep" "wait_for_atracker_cos_authorization_policy" {
 }
 
 resource "ibm_iam_authorization_policy" "atracker_cos" {
-  count                       = var.ibmcloud_cos_api_key != null && !var.skip_activity_tracker_cos_auth_policy ? 1 : 0
+  count                       = local.create_cross_account_atracker_cos_auth_policy
   provider                    = ibm.cos
   source_service_account      = data.ibm_iam_account_settings.iam_account_settings.account_id
   source_service_name         = "atracker"
@@ -203,7 +204,7 @@ data "ibm_iam_account_settings" "iam_cos_account_settings" {
 
 # Create IAM Authorization Policy to allow COS to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "policy" {
-  count = local.create_cross_account_auth_policy
+  count = local.create_cross_account_cos_kms_auth_policy
   # Conditionals with providers aren't possible, using ibm.kms as provider incase cross account is enabled
   provider                    = ibm.kms
   source_service_account      = data.ibm_iam_account_settings.iam_cos_account_settings.account_id
