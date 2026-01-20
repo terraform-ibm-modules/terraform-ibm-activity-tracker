@@ -107,3 +107,38 @@ variable "global_event_routing_settings" {
     )
   }
 }
+
+##############################################################
+# Context-based restriction (CBR)
+##############################################################
+
+variable "cbr_rules" {
+  type = list(object({
+    description = string
+    account_id  = string
+    rule_contexts = list(object({
+      attributes = optional(list(object({
+        name  = string
+        value = string
+    }))) }))
+    enforcement_mode = string
+    operations = optional(list(object({
+      api_types = list(object({
+        api_type_id = string
+      }))
+    })))
+  }))
+  description = "The context-based restrictions rule to create. Only one rule is allowed."
+  default     = []
+  # Validation happens in the rule module
+  validation {
+    condition     = length(var.cbr_rules) <= 1
+    error_message = "Only one CBR rule is allowed."
+  }
+}
+
+variable "cbr_rule_at_region" {
+  type        = string
+  description = "The region where to scope the activity tracker event routing CBR rule."
+  default     = null
+}

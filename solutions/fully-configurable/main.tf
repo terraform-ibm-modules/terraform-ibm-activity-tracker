@@ -108,6 +108,8 @@ module "activity_tracker" {
     }
   ] : []
 
+  cbr_rules = var.activity_tracker_cbr_rules
+
   # Routes
   activity_tracker_routes = local.activity_tracker_routes
 }
