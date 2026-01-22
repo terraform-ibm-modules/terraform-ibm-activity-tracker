@@ -329,7 +329,7 @@ variable "activity_tracker_cbr_rules" {
       }))
     })))
   }))
-  description = "(Optional, list) List of CBR rules to create. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-secrets-manager/blob/main/solutions/fully-configurable/DA-cbr_rules.md)"
+  description = "(Optional, list) List of CBR rules to create. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/blob/main/solutions/fully-configurable/DA-cbr_rules.md)"
   default     = []
   # Validation happens in the rule module
 }

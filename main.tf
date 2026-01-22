@@ -219,7 +219,7 @@ module "cbr_rule" {
       },
       {
         name  = "region"
-        value = var.cbr_rule_at_region
+        value = var.cbr_rules[0].region
       }
     ]
   }]

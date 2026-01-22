@@ -160,19 +160,6 @@
               ]
             },
             {
-              "key": "activity_tracker_cbr_rules",
-              "custom_config": {
-                "type": "code_editor",
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "config_constraints": {
-                  "supportedLanguages": [
-                    "hcl"
-                  ]
-                }
-              }
-            },
-            {
               "key": "existing_cloud_logs_instance_crn",
               "value_constraints": [
                 {
@@ -371,6 +358,19 @@
                   "value": "public-and-private"
                 }
               ]
+            },
+            {
+              "key": "activity_tracker_cbr_rules",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             }
           ],
           "dependencies": [

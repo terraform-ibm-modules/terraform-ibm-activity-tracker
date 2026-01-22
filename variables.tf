@@ -116,6 +116,7 @@ variable "cbr_rules" {
   type = list(object({
     description = string
     account_id  = string
+    region      = optional(string)
     rule_contexts = list(object({
       attributes = optional(list(object({
         name  = string
@@ -135,10 +136,4 @@ variable "cbr_rules" {
     condition     = length(var.cbr_rules) <= 1
     error_message = "Only one CBR rule is allowed."
   }
-}
-
-variable "cbr_rule_at_region" {
-  type        = string
-  description = "The region where to scope the activity tracker event routing CBR rule."
-  default     = null
 }
