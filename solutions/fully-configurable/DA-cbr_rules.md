@@ -1,4 +1,4 @@
-# Configuring complex inputs for Secrets Manager in IBM Cloud projects
+# Configuring complex inputs for Activity Tracker in IBM Cloud projects
 
 Several optional input variables in the IBM Cloud [Activity Tracker deployable architecture](https://cloud.ibm.com/catalog#deployable_architecture) use complex object types. You specify these inputs when you configure deployable architecture.
 
@@ -13,9 +13,9 @@ The `activity_tracker_cbr_rules` input variable allows you to provide a rule for
 - Type: A list of objects. Allows only one object representing a rule for the target service
 - Default value: An empty list (`[]`).
 
-### Options for secrets_manager_cbr_rules
+### Options for activity_tracker_cbr_rules
 
-  - `description` (required): The description of the rule to create.
+  - `description` (required): The description of the rule to create.[Learn more](https://cloud.ibm.com/docs/account?topic=account-at_events_cbr)
   - `account_id` (required): The IBM Cloud Account ID
   - `rule_contexts` (required): (List) The contexts the rule applies to
       - `attributes` (optional): (List) Individual context attributes
