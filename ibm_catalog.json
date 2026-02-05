@@ -23,7 +23,6 @@
       "short_description": "Create and configures IBM Cloud Activity Tracker Event Routing",
       "long_description": "This architecture supports creating and configuring [IBM Cloud Activity Tracker Event Routing](https://cloud.ibm.com/docs/atracker?topic=atracker-getting-started) resources. Activity Tracker Event Routing can be used to manage auditing events at the account-level by configuring targets and routes that define where auditing data is routed. \n\nLeverage [Terraform IBM Modules](https://github.com/terraform-ibm-modules) to shape and scale your solutions. You can integrate Terraform IBM Modules (TIM) to extend functionality and design a solution tailored to your environment and operations needs. These modules offer reusable, customizable elements that follow IBM Cloud's recommended practices. You can access the [source code and documentation](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker) and use it to extend your current architecture or create new solutions.",
       "offering_docs_url": "https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-about-tim",
-      "release_notes_url": "https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-activity-tracker/main/images/activity-tracker-icon.svg",
       "provider_name": "IBM",
       "features": [
@@ -56,6 +55,7 @@
           "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
+          "release_notes_url": "https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases",
           "short_description": "Ideal for users who want flexibility with a reliable starting point.",
           "iam_permissions": [
             {
@@ -570,6 +570,7 @@
           "index": 2,
           "install_type": "fullstack",
           "working_directory": "solutions/event-routing-account-settings",
+          "release_notes_url": "https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases",
           "short_description": "Ideal for configuring Activity Tracker Event Routing settings.",
           "configuration": [
             {
