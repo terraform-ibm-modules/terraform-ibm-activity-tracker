@@ -2,30 +2,29 @@
 
 Several optional input variables in the IBM Cloud [Activity Tracker deployable architecture](https://cloud.ibm.com/catalog#deployable_architecture) use complex object types. You specify these inputs when you configure deployable architecture.
 
-* Context-Based Restrictions Rules (`activity_tracker_cbr_rules`)
+* Context-Based Restrictions Rules (`cbr_rules`)
 
+## Rules For Context-Based Restrictions <a name="cbr_rules"></a>
 
-## Rules For Context-Based Restrictions <a name="activity_tracker_cbr_rules"></a>
+The `cbr_rules` input variable allows you to provide a rule for the target service to enforce access restrictions for the service based on the context of access requests. Contexts are criteria that include the network location of access requests, the endpoint type from where the request is sent, etc.
 
-The `activity_tracker_cbr_rules` input variable allows you to provide a rule for the target service to enforce access restrictions for the service based on the context of access requests. Contexts are criteria that include the network location of access requests, the endpoint type from where the request is sent, etc.
+* Variable name: `cbr_rules`.
+* Type: A list of objects. Allows only one object representing a rule for the target service
+* Default value: An empty list (`[]`).
 
-- Variable name: `activity_tracker_cbr_rules`.
-- Type: A list of objects. Allows only one object representing a rule for the target service
-- Default value: An empty list (`[]`).
+### Options for cbr_rules
 
-### Options for activity_tracker_cbr_rules
+* `description` (required): The description of the rule to create.[Learn more](https://cloud.ibm.com/docs/account?topic=account-at_events_cbr)
+* `account_id` (required): The IBM Cloud Account ID
+* `rule_contexts` (required): (List) The contexts the rule applies to
+  * `attributes` (optional): (List) Individual context attributes
+    * `name` (required): The attribute name.
+    * `value`(required): The attribute value.
 
-  - `description` (required): The description of the rule to create.[Learn more](https://cloud.ibm.com/docs/account?topic=account-at_events_cbr)
-  - `account_id` (required): The IBM Cloud Account ID
-  - `rule_contexts` (required): (List) The contexts the rule applies to
-      - `attributes` (optional): (List) Individual context attributes
-        - `name` (required): The attribute name.
-        - `value`(required): The attribute value.
-
-  - `enforcement_mode` (required): The rule enforcement mode can have the following values:
-      - `enabled` - The restrictions are enforced and reported. This is the default.
-      - `disabled` - The restrictions are disabled. Nothing is enforced or reported.
-      - `report` - The restrictions are evaluated and reported, but not enforced.
+* `enforcement_mode` (required): The rule enforcement mode can have the following values:
+  * `enabled` - The restrictions are enforced and reported. This is the default.
+  * `disabled` - The restrictions are disabled. Nothing is enforced or reported.
+  * `report` - The restrictions are evaluated and reported, but not enforced.
 
 ### Example Rule For Context-Based Restrictions Configuration
 

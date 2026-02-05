@@ -313,7 +313,7 @@ variable "cos_key_name" {
 # Context-based restriction (CBR)
 ##############################################################
 
-variable "activity_tracker_cbr_rules" {
+variable "cbr_rules" {
   type = list(object({
     description = string
     account_id  = string

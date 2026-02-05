@@ -393,7 +393,7 @@
               ]
             },
             {
-              "key": "activity_tracker_cbr_rules",
+              "key": "cbr_rules",
               "custom_config": {
                 "type": "code_editor",
                 "grouping": "deployment",
