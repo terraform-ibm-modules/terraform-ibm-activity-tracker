@@ -5,6 +5,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-activity-tracker?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/releases/latest)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+[![Terraform Registry](https://img.shields.io/badge/terraform-registry-623CE4?logo=terraform)](https://registry.terraform.io/modules/terraform-ibm-modules/activity-tracker/ibm/latest)
 
 This module supports configuring an IBM Cloud Activity Tracker event routing target, routes and settings.
 
@@ -15,6 +16,9 @@ This module supports configuring an IBM Cloud Activity Tracker event routing tar
 :information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
     * <a href="./examples/advanced">Advanced example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=activity-tracker-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
     * <a href="./examples/basic">Basic example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=activity-tracker-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+* [Deployable Architectures](./solutions)
+    * <a href="./solutions/event-routing-account-settings">Cloud automation for Cloud Monitoring (Event Routing Account Settings)</a>
+    * <a href="./solutions/fully-configurable">Cloud automation for Activity Tracker Event Routing (Fully configurable)</a>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
