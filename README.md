@@ -15,6 +15,9 @@ This module supports configuring an IBM Cloud Activity Tracker event routing tar
 :information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
     * <a href="./examples/advanced">Advanced example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=activity-tracker-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
     * <a href="./examples/basic">Basic example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=activity-tracker-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+* [Deployable Architectures](./solutions)
+    * <a href="./solutions/event-routing-account-settings">Cloud automation for Cloud Monitoring (Event Routing Account Settings)</a>
+    * <a href="./solutions/fully-configurable">Cloud automation for Activity Tracker Event Routing (Fully configurable)</a>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
