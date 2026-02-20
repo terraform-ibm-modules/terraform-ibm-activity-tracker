@@ -37,7 +37,7 @@ locals {
 
 module "activity_tracker" {
   source = "../../"
-  # delete line above and use below syntax to pull module source from hashicorp when consuming this module
+  # delete line above and use below syntax to pull module source from HashiCorp when consuming this module
   # source    = "terraform-ibm-modules/activity-tracker/ibm"
   # version   = "X.Y.Z" # Replace "X.X.X" with a release version to lock into a specific release
 
