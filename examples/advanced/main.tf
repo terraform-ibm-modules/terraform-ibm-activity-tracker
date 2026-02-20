@@ -140,7 +140,7 @@ locals {
 
 module "activity_tracker" {
   source = "../../"
-  # delete line above and use below syntax to pull module source from hashicorp when consuming this module
+  # delete line above and use below syntax to pull module source from HashiCorp when consuming this module
   # source    = "terraform-ibm-modules/activity-tracker/ibm"
   # version   = "X.Y.Z" # Replace "X.X.X" with a release version to lock into a specific release
 
@@ -154,7 +154,7 @@ module "activity_tracker" {
   ]
   cos_targets = [
     {
-      bucket_name                       = local.at_bucket_name
+      bucket_name                       = module.buckets.buckets[local.at_bucket_name].bucket_name
       endpoint                          = module.buckets.buckets[local.at_bucket_name].s3_endpoint_direct
       instance_id                       = module.cos.cos_instance_id
       target_region                     = var.region
