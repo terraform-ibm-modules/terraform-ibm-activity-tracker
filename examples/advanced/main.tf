@@ -154,7 +154,7 @@ module "activity_tracker" {
   ]
   cos_targets = [
     {
-      bucket_name                       = local.at_bucket_name
+      bucket_name                       = module.buckets.buckets[local.at_bucket_name].bucket_name
       endpoint                          = module.buckets.buckets[local.at_bucket_name].s3_endpoint_direct
       instance_id                       = module.cos.cos_instance_id
       target_region                     = var.region
