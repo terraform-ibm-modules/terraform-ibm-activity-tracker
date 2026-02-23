@@ -16,6 +16,7 @@ The `cbr_rules` input variable allows you to provide a rule for the target servi
 
 * `description` (required): The description of the rule to create.[Learn more](https://cloud.ibm.com/docs/account?topic=account-at_events_cbr)
 * `account_id` (required): The IBM Cloud Account ID
+* `region` (optional): The region where the CBR rule applies to the Activity Tracker Event Routing service. If not specified, the rule applies to all regions.
 * `rule_contexts` (required): (List) The contexts the rule applies to
   * `attributes` (optional): (List) Individual context attributes
     * `name` (required): The attribute name.

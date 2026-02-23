@@ -15,6 +15,7 @@ module "resource_group" {
 ##############################################################################
 
 module "cloud_logs" {
+  depends_on        = [module.cbr_zone_atracker]
   source            = "terraform-ibm-modules/cloud-logs/ibm"
   version           = "1.10.35"
   resource_group_id = module.resource_group.resource_group_id
@@ -27,6 +28,23 @@ module "cloud_logs" {
       enabled = false
     }
   }
+  cbr_rules = [{
+    description      = "CBR rule for Activity Tracker Cloud Logs target"
+    enforcement_mode = "report"
+    account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
+    rule_contexts = [{
+      attributes = [
+        {
+          name  = "endpointType"
+          value = "private"
+        },
+        {
+          name  = "networkZoneId"
+          value = module.cbr_zone_atracker.zone_id
+        }
+      ]
+    }]
+  }]
 }
 
 ##############################################################################
@@ -38,6 +56,7 @@ locals {
 }
 
 module "event_streams" {
+  depends_on        = [module.cbr_zone_atracker]
   source            = "terraform-ibm-modules/event-streams/ibm"
   version           = "4.6.24"
   es_name           = "${var.prefix}-eventsteams-instance"
@@ -55,6 +74,23 @@ module "event_streams" {
       "segment.bytes"   = "536870912" # 512 MB
     }
   }, ]
+  cbr_rules = [{
+    description      = "CBR rule for Activity Tracker Event Streams target"
+    enforcement_mode = "report"
+    account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
+    rule_contexts = [{
+      attributes = [
+        {
+          name  = "endpointType"
+          value = "private"
+        },
+        {
+          name  = "networkZoneId"
+          value = module.cbr_zone_atracker.zone_id
+        }
+      ]
+    }]
+  }]
 }
 
 ##############################################################################
@@ -103,8 +139,9 @@ locals {
 }
 
 module "buckets" {
-  source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "10.9.9"
+  depends_on = [module.cbr_zone_atracker]
+  source     = "terraform-ibm-modules/cos/ibm//modules/buckets"
+  version    = "10.9.9"
   bucket_configs = [
     {
       bucket_name                   = local.at_bucket_name
@@ -114,8 +151,52 @@ module "buckets" {
       kms_guid                      = module.key_protect.kms_guid
       kms_key_crn                   = module.key_protect.keys["${local.key_ring_name}.${local.key_name}"].crn
       skip_iam_authorization_policy = false # Auth policy created in first bucket
+      cbr_rules = [{
+        description      = "CBR rule for Activity Tracker COS target bucket"
+        enforcement_mode = "report"
+        account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
+        rule_contexts = [{
+          attributes = [
+            {
+              name  = "endpointType"
+              value = "private"
+            },
+            {
+              name  = "networkZoneId"
+              value = module.cbr_zone_atracker.zone_id
+            }
+          ]
+        }]
+      }]
     }
   ]
+}
+
+##############################################################################
+# Get Cloud Account ID
+##############################################################################
+
+data "ibm_iam_account_settings" "iam_account_settings" {
+}
+
+##############################################################################
+# Create CBR Zone for Activity Tracker Event Routing
+##############################################################################
+
+# This zone will be referenced in CBR rules for all target services (COS, Cloud Logs, Event Streams)
+module "cbr_zone_atracker" {
+  source           = "terraform-ibm-modules/cbr/ibm//modules/cbr-zone-module"
+  version          = "1.35.10"
+  name             = "${var.prefix}-atracker-zone"
+  zone_description = "CBR Network zone for Activity Tracker Event Routing service"
+  account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
+  addresses = [{
+    type = "serviceRef"
+    ref = {
+      account_id   = data.ibm_iam_account_settings.iam_account_settings.account_id
+      service_name = "atracker"
+    }
+  }]
 }
 
 ##############################################################################
@@ -183,6 +264,24 @@ module "activity_tracker" {
       route_name = "${var.prefix}-route"
     }
   ]
+  cbr_rules = [{
+    description      = "${var.prefix}-at-event-routing access from network zones"
+    account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
+    region           = var.region
+    enforcement_mode = "report"
+    rule_contexts = [{
+      attributes = [
+        {
+          name  = "endpointType"
+          value = "private"
+        },
+        {
+          name  = "networkZoneId"
+          value = module.cbr_zone_atracker.zone_id
+        }
+      ]
+    }]
+  }]
 
   # Global Event Routing Settings
   # default_targets           - The default target per account to configure where auditing events that are not explicitly managed in the accounts routing rules are routed.

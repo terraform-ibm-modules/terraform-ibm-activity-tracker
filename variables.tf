@@ -129,7 +129,7 @@ variable "cbr_rules" {
       }))
     })))
   }))
-  description = "The context-based restrictions rule to create. Only one rule is allowed.[Learn more](https://cloud.ibm.com/docs/account?topic=account-at_events_cbr)"
+  description = "The context-based restrictions rule to create. Only one rule is allowed. [Learn more](https://cloud.ibm.com/docs/account?topic=account-at_events_cbr)."
   default     = []
   # Validation happens in the rule module
   validation {
