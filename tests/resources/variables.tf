@@ -27,6 +27,6 @@ variable "region" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "The tags to add to the created resources."
+  description = "Add user resource tags to the Activity Tracker instance to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types)."
   default     = []
 }
