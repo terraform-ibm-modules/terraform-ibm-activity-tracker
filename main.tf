@@ -228,10 +228,10 @@ module "cbr_rule" {
         value    = "atracker"
         operator = "stringEquals"
       },
-      {
+      var.cbr_rules[count.index].region != null ? [{
         name  = "region"
-        value = var.cbr_rules[0].region
-      }
+        value = var.cbr_rules[count.index].region
+      }] : []
     ]
   }]
   operations = var.cbr_rules[count.index].operations == null ? local.default_operations : var.cbr_rules[count.index].operations
