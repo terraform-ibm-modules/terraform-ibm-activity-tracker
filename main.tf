@@ -217,7 +217,7 @@ module "cbr_rule" {
   enforcement_mode = var.cbr_rules[count.index].enforcement_mode
   rule_contexts    = var.cbr_rules[count.index].rule_contexts
   resources = [{
-    attributes = [
+    attributes = concat([
       {
         name     = "accountId"
         value    = var.cbr_rules[count.index].account_id
@@ -227,12 +227,13 @@ module "cbr_rule" {
         name     = "serviceName"
         value    = "atracker"
         operator = "stringEquals"
-      },
+      }
+      ],
       var.cbr_rules[count.index].region != null ? [{
-        name  = "region"
-        value = var.cbr_rules[count.index].region
-      }] : []
-    ]
+        name     = "region"
+        value    = var.cbr_rules[count.index].region
+        operator = "stringEquals"
+    }] : [])
   }]
   operations = var.cbr_rules[count.index].operations == null ? local.default_operations : var.cbr_rules[count.index].operations
 }
