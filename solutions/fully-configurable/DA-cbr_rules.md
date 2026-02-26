@@ -42,7 +42,7 @@ The following example defines a **Context-Based Restrictions (CBR) rule** that r
       value : "private"
     },{
       name  = "networkZoneId"
-      value = "<REPLACE ME>" # pragma: allowlist secret
+      value = "<REPLACE ME>"
     }]
   }]
   enforcement_mode = "enabled"

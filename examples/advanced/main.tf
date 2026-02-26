@@ -15,7 +15,6 @@ module "resource_group" {
 ##############################################################################
 
 module "cloud_logs" {
-  depends_on        = [module.cbr_zone_atracker]
   source            = "terraform-ibm-modules/cloud-logs/ibm"
   version           = "1.10.35"
   resource_group_id = module.resource_group.resource_group_id
@@ -30,7 +29,7 @@ module "cloud_logs" {
   }
   cbr_rules = [{
     description      = "CBR rule for Activity Tracker Cloud Logs target"
-    enforcement_mode = "report"
+    enforcement_mode = "report" # to enable this, set to "enabled"
     account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
     rule_contexts = [{
       attributes = [
@@ -56,7 +55,6 @@ locals {
 }
 
 module "event_streams" {
-  depends_on        = [module.cbr_zone_atracker]
   source            = "terraform-ibm-modules/event-streams/ibm"
   version           = "4.6.24"
   es_name           = "${var.prefix}-eventsteams-instance"
@@ -76,7 +74,7 @@ module "event_streams" {
   }, ]
   cbr_rules = [{
     description      = "CBR rule for Activity Tracker Event Streams target"
-    enforcement_mode = "report"
+    enforcement_mode = "report" # to enable this, set to "enabled"
     account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
     rule_contexts = [{
       attributes = [
@@ -139,9 +137,8 @@ locals {
 }
 
 module "buckets" {
-  depends_on = [module.cbr_zone_atracker]
-  source     = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version    = "10.9.9"
+  source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
+  version = "10.9.9"
   bucket_configs = [
     {
       bucket_name                   = local.at_bucket_name
@@ -153,7 +150,7 @@ module "buckets" {
       skip_iam_authorization_policy = false # Auth policy created in first bucket
       cbr_rules = [{
         description      = "CBR rule for Activity Tracker COS target bucket"
-        enforcement_mode = "report"
+        enforcement_mode = "report" # to enable this, set to "enabled"
         account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
         rule_contexts = [{
           attributes = [
@@ -268,7 +265,7 @@ module "activity_tracker" {
     description      = "${var.prefix}-at-event-routing access from network zones"
     account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
     region           = var.region
-    enforcement_mode = "report"
+    enforcement_mode = "report" # to enable this, set to "enabled"
     rule_contexts = [{
       attributes = [
         {
