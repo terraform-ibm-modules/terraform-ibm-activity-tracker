@@ -391,6 +391,19 @@
                   "value": "public-and-private"
                 }
               ]
+            },
+            {
+              "key": "cbr_rules",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             }
           ],
           "dependencies": [
