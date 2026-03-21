@@ -139,14 +139,14 @@ resource "ibm_iam_authorization_policy" "atracker_cos" {
 module "kms_instance_crn_parser" {
   count   = var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.1"
+  version = "1.4.2"
   crn     = var.existing_kms_instance_crn
 }
 
 module "existing_kms_key_crn_parser" {
   count   = var.existing_cos_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.1"
+  version = "1.4.2"
   crn     = var.existing_cos_kms_key_crn
 }
 
@@ -156,7 +156,7 @@ module "kms" {
   }
   count                       = (local.use_kms_module && (length(coalesce(local.buckets_config, [])) != 0)) ? 1 : 0 # no need to create any KMS resources if `kms_encryption_enabled_buckets` is false or `existing_cos_kms_key_crn` is provided or `buckets_config` length is 0
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.5.27"
+  version                     = "5.5.36"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn
@@ -187,7 +187,7 @@ module "kms" {
 module "cos_crn_parser" {
   count   = var.existing_cos_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.1"
+  version = "1.4.2"
   crn     = var.existing_cos_instance_crn
 }
 
@@ -254,7 +254,7 @@ module "cos_bucket" {
   }
   count   = length(coalesce(local.buckets_config, [])) != 0 ? 1 : 0 # no need to call COS module if consumer is using existing COS bucket
   source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "10.9.9"
+  version = "10.14.9"
   bucket_configs = [
     for value in local.buckets_config :
     {
