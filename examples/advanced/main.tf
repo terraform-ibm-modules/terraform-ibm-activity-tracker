@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.12.9"
+  version           = "1.13.0"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   data_storage = {
@@ -58,7 +58,6 @@ module "event_streams" {
   source            = "terraform-ibm-modules/event-streams/ibm"
   version           = "4.9.0"
   es_name           = "${var.prefix}-eventsteams-instance"
-  tags              = var.resource_tags
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   plan              = "standard"
