@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.13.1"
+  version           = "1.13.2"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   data_storage = {
@@ -182,7 +182,7 @@ data "ibm_iam_account_settings" "iam_account_settings" {
 # This zone will be referenced in CBR rules for all target services (COS, Cloud Logs, Event Streams)
 module "cbr_zone_atracker" {
   source           = "terraform-ibm-modules/cbr/ibm//modules/cbr-zone-module"
-  version          = "1.36.1"
+  version          = "1.36.2"
   name             = "${var.prefix}-atracker-zone"
   zone_description = "CBR Network zone for Activity Tracker Event Routing service"
   account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
