@@ -2,6 +2,7 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -83,8 +84,8 @@ func setupExistingOptions(t *testing.T, cloudLogsPrefix string) (preReqTfOptions
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, cloudLogsPrefix)
-	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, cloudLogsPrefix)
+	_, existErr := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 
 	if existErr != nil {
 		assert.True(t, existErr == nil, "Init and Apply of pre-req resources failed")
@@ -114,7 +115,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		TerraformVersion:       terraformVersion,
 	})
 
-	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueId()))
+	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueID()))
 
 	existingTerraformOptions, err := setupExistingOptions(t, cloudLogsPrefix)
 
@@ -133,8 +134,8 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 			fmt.Println("Terratest failed. Debug the Test and delete resources manually.")
 		} else {
 			logger.Log(t, "START: Destroy (pre-req resources)")
-			terraform.Destroy(t, existingTerraformOptions)
-			terraform.WorkspaceDelete(t, existingTerraformOptions, cloudLogsPrefix)
+			terraform.DestroyContext(t, context.Background(), existingTerraformOptions)
+			terraform.WorkspaceDeleteContext(t, context.Background(), existingTerraformOptions, cloudLogsPrefix)
 			logger.Log(t, "END: Destroy (pre-req resources)")
 		}
 	}()
@@ -142,7 +143,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
-		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
+		{Name: "existing_cloud_logs_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "enable_activity_tracker_event_routing_to_cloud_logs", Value: true, DataType: "bool"},
 		{Name: "enable_activity_tracker_event_routing_to_cos_bucket", Value: true, DataType: "bool"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
@@ -174,7 +175,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 		TerraformVersion:           terraformVersion,
 	})
 
-	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueId()))
+	cloudLogsPrefix := fmt.Sprintf("cloud-logs-%s", strings.ToLower(random.UniqueID()))
 
 	existingTerraformOptions, err := setupExistingOptions(t, cloudLogsPrefix)
 
@@ -193,8 +194,8 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 			fmt.Println("Terratest failed. Debug the Test and delete resources manually.")
 		} else {
 			logger.Log(t, "START: Destroy (pre-req resources)")
-			terraform.Destroy(t, existingTerraformOptions)
-			terraform.WorkspaceDelete(t, existingTerraformOptions, cloudLogsPrefix)
+			terraform.DestroyContext(t, context.Background(), existingTerraformOptions)
+			terraform.WorkspaceDeleteContext(t, context.Background(), existingTerraformOptions, cloudLogsPrefix)
 			logger.Log(t, "END: Destroy (pre-req resources)")
 		}
 	}()
@@ -203,7 +204,7 @@ func TestFullyConfigurableUpgradeInSchematics(t *testing.T) {
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
-		{Name: "existing_cloud_logs_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "icl_crn"), DataType: "string"},
+		{Name: "existing_cloud_logs_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "enable_activity_tracker_event_routing_to_cloud_logs", Value: true, DataType: "bool"},
 		{Name: "enable_activity_tracker_event_routing_to_cos_bucket", Value: true, DataType: "bool"},
 		{Name: "kms_encryption_enabled_buckets", Value: true, DataType: "bool"},
