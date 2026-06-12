@@ -13,23 +13,23 @@ This module supports configuring an IBM Cloud Activity Tracker event routing tar
 ## Overview
 <ul>
   <li><a href="#terraform-ibm-activity-tracker">terraform-ibm-activity-tracker</a></li>
-  <li><a href="./examples">Examples</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples">Examples</a>
     <ul>
       <li>
-        <a href="./examples/advanced">Advanced example</a>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/advanced">Advanced example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=activity-tracker-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
       <li>
-        <a href="./examples/basic">Basic example</a>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/basic">Basic example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=activity-tracker-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
     </ul>
     ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
   </li>
-  <li><a href="./solutions">Deployable Architectures</a>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/solutions">Deployable Architectures</a>
     <ul>
-      <li><a href="./solutions/event-routing-account-settings">Cloud automation for Cloud Monitoring (Event Routing Account Settings)</a></li>
-      <li><a href="./solutions/fully-configurable">Cloud automation for Activity Tracker Event Routing (Fully configurable)</a></li>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/solutions/event-routing-account-settings">Cloud automation for Cloud Monitoring (Event Routing Account Settings)</a></li>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-activity-tracker/tree/main/solutions/fully-configurable">Cloud automation for Activity Tracker Event Routing (Fully configurable)</a></li>
     </ul>
   </li>
   <li><a href="#contributing">Contributing</a></li>
