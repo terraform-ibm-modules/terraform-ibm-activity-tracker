@@ -139,14 +139,14 @@ resource "ibm_iam_authorization_policy" "atracker_cos" {
 module "kms_instance_crn_parser" {
   count   = var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_kms_instance_crn
 }
 
 module "existing_kms_key_crn_parser" {
   count   = var.existing_cos_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_cos_kms_key_crn
 }
 
@@ -187,7 +187,7 @@ module "kms" {
 module "cos_crn_parser" {
   count   = var.existing_cos_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_cos_instance_crn
 }
 
