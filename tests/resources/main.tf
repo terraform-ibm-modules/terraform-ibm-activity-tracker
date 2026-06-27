@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm"
-  version           = "10.16.6"
+  version           = "10.16.7"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${var.prefix}-cos"
   resource_tags     = var.resource_tags
@@ -34,7 +34,7 @@ locals {
 
 module "buckets" {
   source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "10.16.6"
+  version = "10.16.7"
   bucket_configs = [
     {
       bucket_name            = local.logs_bucket_name
@@ -57,7 +57,7 @@ module "buckets" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.13.13"
+  version           = "1.13.14"
   instance_name     = var.prefix
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
