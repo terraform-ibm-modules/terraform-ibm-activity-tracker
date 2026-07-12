@@ -124,7 +124,7 @@ module "key_protect" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm"
-  version           = "10.17.4"
+  version           = "10.17.5"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${var.prefix}-cos"
   resource_tags     = var.resource_tags
@@ -137,7 +137,7 @@ locals {
 
 module "buckets" {
   source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "10.17.4"
+  version = "10.17.5"
   bucket_configs = [
     {
       bucket_name                   = local.at_bucket_name
