@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.13.21"
+  version           = "1.14.0"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   data_storage = {
