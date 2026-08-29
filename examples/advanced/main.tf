@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.14.1"
+  version           = "1.15.2"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   data_storage = {
@@ -56,7 +56,7 @@ locals {
 
 module "event_streams" {
   source            = "terraform-ibm-modules/event-streams/ibm"
-  version           = "5.0.1"
+  version           = "5.0.2"
   es_name           = "${var.prefix}-eventsteams-instance"
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
@@ -124,7 +124,7 @@ module "key_protect" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm"
-  version           = "10.17.7"
+  version           = "10.17.8"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${var.prefix}-cos"
   resource_tags     = var.resource_tags
@@ -137,7 +137,7 @@ locals {
 
 module "buckets" {
   source  = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version = "10.17.7"
+  version = "10.17.8"
   bucket_configs = [
     {
       bucket_name                   = local.at_bucket_name
