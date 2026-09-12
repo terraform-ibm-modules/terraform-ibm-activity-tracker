@@ -16,7 +16,7 @@ module "resource_group" {
 
 module "cloud_logs" {
   source            = "terraform-ibm-modules/cloud-logs/ibm"
-  version           = "1.15.5"
+  version           = "1.15.6"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   data_storage = {
@@ -101,7 +101,7 @@ locals {
 
 module "key_protect" {
   source            = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version           = "5.6.7"
+  version           = "5.6.8"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   resource_tags     = var.resource_tags
