@@ -273,7 +273,7 @@ variable "existing_kms_instance_crn" {
   description = "The CRN of the key management service (KMS) that is used to create keys for encrypting the Cloud Object Storage bucket. If you are not using an existing KMS root key, you must specify this CRN. If the existing Cloud Object Storage bucket details are passed as an input, this value is not required."
   validation {
     condition = anytrue([
-      can(regex("^crn:(.*:){3}(kms):(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_kms_instance_crn)),
+      can(regex("^crn:(.*:){3}kms:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_kms_instance_crn)),
       var.existing_kms_instance_crn == null,
     ])
     error_message = "The provided KMS instance CRN in the input 'existing_kms_instance_crn' in not valid."
