@@ -288,7 +288,7 @@ variable "existing_cos_kms_key_crn" {
 
 variable "kms_endpoint_type" {
   type        = string
-  description = "The type of endpoint to use for communicating with the Key Protect or Hyper Protect Crypto Services instance. Possible values: `public`, `private`. Applies only if `existing_cos_kms_key_crn` is not specified."
+  description = "The type of endpoint to use for communicating with the Key Protect instance. Possible values: `public`, `private`. Applies only if `existing_cos_kms_key_crn` is not specified."
   default     = "private"
   validation {
     condition     = can(regex("^(public|private)$", var.kms_endpoint_type))
