@@ -73,7 +73,7 @@ module "event_streams" {
   }, ]
   cbr_rules = [{
     description      = "CBR rule for Activity Tracker Event Streams target"
-    enforcement_mode = "report" # to enable this, set to "enabled"
+    enforcement_mode = "disabled" # to enable this, set to "enabled"
     account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
     rule_contexts = [{
       attributes = [
