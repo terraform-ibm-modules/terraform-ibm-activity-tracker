@@ -132,6 +132,20 @@ resource "ibm_iam_authorization_policy" "atracker_cos" {
 }
 
 #######################################################################################################################
+# HPCS Deprecation Warning
+#######################################################################################################################
+
+check "warn_hs_crypto_key" {
+  assert {
+    condition = !(
+      (var.existing_cos_kms_key_crn != null && can(regex(".*hs-crypto.*", var.existing_cos_kms_key_crn))) ||
+      (var.existing_kms_instance_crn != null && can(regex(".*hs-crypto.*", var.existing_kms_instance_crn)))
+    )
+    error_message = "WARNING (Non-fatal, execution will continue): An IBM Cloud Hyper Protect Crypto Services (hs-crypto) key CRN was provided. Note that IBM Cloud Hyper Protect Crypto Services is set to be deprecated soon. Consider migrating to a supported alternative."
+  }
+}
+
+#######################################################################################################################
 # KMS Key
 #######################################################################################################################
 
