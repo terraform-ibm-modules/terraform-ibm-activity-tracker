@@ -346,7 +346,7 @@
               "value_constraints": [
                 {
                   "type": "regex",
-                  "description": "The value provided for 'existing_kms_instance_crn' is not valid. Must be a valid Key Protect (kms) or Hyper Protect Crypto Services (hs-crypto) instance CRN.",
+                  "description": "The value provided for 'existing_kms_instance_crn' is not valid.",
                   "value": "^__NULL__$|^crn:(.*:){3}(kms|hs-crypto):(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
                 }
               ]
