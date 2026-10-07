@@ -135,7 +135,7 @@ resource "ibm_iam_authorization_policy" "atracker_cos" {
 # HPCS Deprecation Warning
 #######################################################################################################################
 
-check "warn_hs_crypto_key" {
+check "warn_hpcs_deprecation" {
   assert {
     condition = !(
       (var.existing_cos_kms_key_crn != null && can(regex(".*hs-crypto.*", var.existing_cos_kms_key_crn))) ||
