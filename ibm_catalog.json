@@ -88,7 +88,15 @@
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "notes": "[Optional] Required if KMS encryption is enabled and Key protect is used for encryption."
+              "notes": "[Optional] Required if KMS encryption is enabled and Key Protect is used for encryption."
+            },
+            {
+              "service_name": "hs-crypto",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "[Optional] Required if KMS encryption is enabled and Hyper Protect Crypto Services is used for encryption."
             }
           ],
           "configuration": [
@@ -308,7 +316,7 @@
                 {
                   "type": "regex",
                   "description": "The value provided for 'existing_cos_kms_key_crn' is not valid.",
-                  "value": "^__NULL__$|^crn:(.*:){3}kms:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:key:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                  "value": "^__NULL__$|^crn:(.*:){3}(kms|hs-crypto):(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:key:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
                 }
               ]
             },
@@ -339,7 +347,7 @@
                 {
                   "type": "regex",
                   "description": "The value provided for 'existing_kms_instance_crn' is not valid.",
-                  "value": "^__NULL__$|^crn:(.*:){3}kms:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                  "value": "^__NULL__$|^crn:(.*:){3}(kms|hs-crypto):(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
                 }
               ]
             },
