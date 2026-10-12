@@ -102,7 +102,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Prefix:  "at-fc",
-		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
+		Region:  "eu-fr2", // Hardcoding region to match the permanent HPCS eu-fr2 instance used for KMS encryption.
 		TarIncludePatterns: []string{
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
@@ -141,7 +141,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	}()
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
-		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_eufr2_crn"], DataType: "string"},
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "existing_cloud_logs_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "icl_crn"), DataType: "string"},
 		{Name: "enable_activity_tracker_event_routing_to_cloud_logs", Value: true, DataType: "bool"},
