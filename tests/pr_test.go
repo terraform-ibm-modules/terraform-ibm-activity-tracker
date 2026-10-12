@@ -102,7 +102,7 @@ func TestFullyConfigurableInSchematics(t *testing.T) {
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Prefix:  "at-fc",
-		Region:  "eu-fr2", // Hardcoding region to match the permanent HPCS eu-fr2 instance used for KMS encryption.
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		TarIncludePatterns: []string{
 			"*.tf",
 			fullyConfigurableTerraformDir + "/*.tf",
