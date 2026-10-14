@@ -288,12 +288,10 @@ module "activity_tracker" {
 
   # Uncomment below to configure global event routing settings.
 
-  /*
-  global_event_routing_settings = {
-    default_targets           = local.target_ids
-    permitted_target_regions  = ["us-south", "eu-de", "us-east", "eu-es", "eu-gb", "au-syd", "br-sao", "ca-tor", "ca-mon", "eu-es", "jp-tok", "jp-osa", "in-che", "in-mum", "eu-fr2"]
-    metadata_region_primary   = "us-south"
-    private_api_endpoint_only = false
-  }
-  */
+  # global_event_routing_settings = {
+  #   default_targets           = local.target_ids
+  #   permitted_target_regions  = ["us-south", "eu-de", "us-east", "eu-es", "eu-gb", "au-syd", "br-sao", "ca-tor", "ca-mon", "eu-es", "jp-tok", "jp-osa", "in-che", "in-mum", "eu-fr2"]
+  #   metadata_region_primary   = "us-south"
+  #   private_api_endpoint_only = false
+  # }
 }
