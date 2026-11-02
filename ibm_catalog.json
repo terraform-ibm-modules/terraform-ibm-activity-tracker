@@ -484,7 +484,7 @@
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "version": "v2.1.7",
+              "version": "v2.1.8",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
